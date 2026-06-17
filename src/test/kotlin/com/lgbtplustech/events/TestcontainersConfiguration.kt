@@ -1,4 +1,4 @@
-package com.lgbtplustech.events_api
+package com.lgbtplustech.events
 
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection

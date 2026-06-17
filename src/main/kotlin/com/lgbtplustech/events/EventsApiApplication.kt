@@ -1,4 +1,4 @@
-package com.lgbtplustech.events_api
+package com.lgbtplustech.events
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
