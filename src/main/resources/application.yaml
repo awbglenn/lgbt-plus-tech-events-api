@@ -1,3 +1,16 @@
 spring:
   application:
     name: events-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/events
+    username: events
+    password: events
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    enabled: true

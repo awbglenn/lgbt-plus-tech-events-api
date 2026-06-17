@@ -1,0 +1,56 @@
+# Gradle
+
+.gradle
+build
+
+# IntelliJ
+
+.idea/
+*.iml
+out/
+
+# VS Code
+
+.vscode/
+
+# macOS
+
+.DS_Store
+
+# Logs
+
+*.log
+
+# Environment files
+
+.env
+.env.*
+
+# Spring Boot
+
+application-local.yml
+application-local.yaml
+
+# Testcontainers
+
+testcontainers.properties
+
+# Java
+
+hs_err_pid*
+replay_pid*
+
+# Coverage
+
+coverage/
+jacoco/
+
+# Temporary files
+
+tmp/
+temp/
+
+# OS files
+
+Thumbs.db
+/build/*
