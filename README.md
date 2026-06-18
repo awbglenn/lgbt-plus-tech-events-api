@@ -12,15 +12,18 @@ Backend API for managing LGBT+Tech community events.
 - Testcontainers
 
 ## Development
+(To do)
+
+## Running the Application
 
 ### Start PostgreSQL
 
-docker compose up -d
+`docker compose up -d`
 
 ### Run application
 
-./gradlew bootRun
+`./gradlew bootRun`
 
 ### Run tests
 
-./gradlew test
+`./gradlew test`
