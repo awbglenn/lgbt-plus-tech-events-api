@@ -13,9 +13,10 @@ class Event(
     val venueAddress: String,
     val capacity: Int,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
+    status: EventStatus = EventStatus.DRAFT
 ) {
-    var status: EventStatus = EventStatus.DRAFT
+    var status: EventStatus = status
         private set
 
     init {
