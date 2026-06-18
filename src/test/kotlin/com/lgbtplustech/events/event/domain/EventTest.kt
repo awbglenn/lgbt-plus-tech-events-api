@@ -48,10 +48,22 @@ class EventTest {
         }
     }
 
+    @Test
+    fun `does not create event updated before it was created`() {
+        assertThrows<IllegalArgumentException> {
+            testEvent(
+                createdAt = Instant.parse("2026-06-01T10:00:00Z"),
+                updatedAt = Instant.parse("2026-06-01T09:00:00Z")
+            )
+        }
+    }
+
     private fun testEvent(
         title: String = "Test", capacity: Int = 50,
         startsAt: Instant = Instant.parse("2026-07-01T18:30:00Z"),
-        endsAt: Instant = Instant.parse("2026-07-01T21:00:00Z")
+        endsAt: Instant = Instant.parse("2026-07-01T21:00:00Z"),
+        createdAt: Instant = Instant.parse("2026-06-01T10:00:00Z"),
+        updatedAt: Instant = Instant.parse("2026-06-01T10:00:00Z")
     ) = Event(
         id = UUID.randomUUID(),
         title = title,
@@ -60,6 +72,8 @@ class EventTest {
         endsAt = endsAt,
         venueName = "Example Venue",
         venueAddress = "Barcelona",
-        capacity = capacity
+        capacity = capacity,
+        createdAt = createdAt,
+        updatedAt = updatedAt
     )
 }

@@ -4,14 +4,20 @@ import com.lgbtplustech.events.event.domain.Event
 import com.lgbtplustech.events.event.domain.EventStatus
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.time.Clock
 import java.time.Instant
+import java.time.ZoneOffset
 
 class CreateEventUseCaseTest {
 
     @Test
     fun `creates draft event`() {
         val repository = FakeEventRepository()
-        val createEvent: CreateEvent = CreateEventUseCase(repository)
+        val clock = Clock.fixed(
+            Instant.parse("2026-06-01T10:00:00Z"),
+            ZoneOffset.UTC
+        )
+        val createEvent: CreateEvent = CreateEventUseCase(repository, clock)
 
         val eventId = createEvent.execute(command())
 
@@ -20,6 +26,8 @@ class CreateEventUseCaseTest {
         assertEquals(savedEvent.id, eventId)
         assertEquals(EventStatus.DRAFT, savedEvent.status)
         assertEquals("LGBT+Tech Barcelona", savedEvent.title)
+        assertEquals(Instant.parse("2026-06-01T10:00:00Z"), savedEvent.createdAt)
+        assertEquals(Instant.parse("2026-06-01T10:00:00Z"), savedEvent.updatedAt)
     }
 
     private fun command() = CreateEventCommand(

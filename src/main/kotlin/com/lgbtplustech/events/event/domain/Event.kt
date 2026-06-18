@@ -11,7 +11,9 @@ class Event(
     val endsAt: Instant,
     val venueName: String,
     val venueAddress: String,
-    val capacity: Int
+    val capacity: Int,
+    val createdAt: Instant,
+    val updatedAt: Instant
 ) {
     var status: EventStatus = EventStatus.DRAFT
         private set
@@ -23,6 +25,7 @@ class Event(
         require(venueAddress.isNotBlank()) { "Venue address cannot be blank" }
         require(capacity > 0) { "Capacity must be greater than zero" }
         require(endsAt > startsAt) { "Event must end after it starts" }
+        require(updatedAt >= createdAt) { "Updated at cannot be before created at" }
     }
 
     fun publish() {
