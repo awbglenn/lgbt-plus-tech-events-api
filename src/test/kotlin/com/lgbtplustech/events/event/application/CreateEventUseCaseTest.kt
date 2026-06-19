@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneOffset
+import java.util.UUID
 
 class CreateEventUseCaseTest {
 
@@ -46,6 +47,10 @@ class CreateEventUseCaseTest {
         override fun save(event: Event): Event {
             savedEvent = event
             return event
+        }
+
+        override fun findById(id: UUID): Event? {
+            TODO("Not yet implemented")
         }
     }
 }

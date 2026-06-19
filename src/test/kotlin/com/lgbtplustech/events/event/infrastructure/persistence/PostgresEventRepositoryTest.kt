@@ -11,12 +11,24 @@ import org.springframework.context.annotation.Import
 import java.time.Instant
 import java.util.UUID
 
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
+
 @DataJpaTest
+@Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(PostgresEventRepository::class)
 class PostgresEventRepositoryTest(
     @Autowired private val repository: PostgresEventRepository
 ) {
+
+    companion object {
+        @Container
+        @ServiceConnection
+        val postgres = PostgreSQLContainer("postgres:17")
+    }
 
     @Test
     fun `saves event`() {
@@ -29,6 +41,18 @@ class PostgresEventRepositoryTest(
         assertEquals(EventStatus.DRAFT, savedEvent.status)
         assertEquals(event.createdAt, savedEvent.createdAt)
         assertEquals(event.updatedAt, savedEvent.updatedAt)
+    }
+
+    @Test
+    fun `finds saved event`() {
+        val event = testEvent()
+        repository.save(event)
+
+        val found = repository.findById(event.id)
+
+        assertEquals(event.id, found?.id)
+        assertEquals(event.title, found?.title)
+        assertEquals(event.description, found?.description)
     }
 
     private fun testEvent() = Event(
