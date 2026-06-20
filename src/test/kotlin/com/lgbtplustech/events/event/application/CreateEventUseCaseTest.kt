@@ -1,13 +1,12 @@
 package com.lgbtplustech.events.event.application
 
-import com.lgbtplustech.events.event.domain.Event
 import com.lgbtplustech.events.event.domain.EventStatus
+import com.lgbtplustech.events.testing.FakeEventRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneOffset
-import java.util.UUID
 
 class CreateEventUseCaseTest {
 
@@ -19,8 +18,7 @@ class CreateEventUseCaseTest {
             ZoneOffset.UTC
         )
         val createEvent: CreateEvent = CreateEventUseCase(repository, clock)
-
-        val eventId = createEvent.execute(command())
+        val eventId = createEvent.execute(testCommand())
 
         val savedEvent = repository.savedEvent
 
@@ -31,7 +29,7 @@ class CreateEventUseCaseTest {
         assertEquals(Instant.parse("2026-06-01T10:00:00Z"), savedEvent.updatedAt)
     }
 
-    private fun command() = CreateEventCommand(
+    private fun testCommand() = CreateEventCommand(
         title = "LGBT+Tech Barcelona",
         description = "Monthly meetup",
         startsAt = Instant.parse("2026-07-01T18:30:00Z"),
@@ -41,19 +39,4 @@ class CreateEventUseCaseTest {
         capacity = 50
     )
 
-    private class FakeEventRepository : EventRepository {
-        private val events = mutableMapOf<UUID, Event>()
-
-        lateinit var savedEvent: Event
-            private set
-
-        override fun save(event: Event): Event {
-            events[event.id] = event
-            savedEvent = event
-            return event
-        }
-
-        override fun findById(id: UUID): Event? =
-            events[id]
-    }
 }

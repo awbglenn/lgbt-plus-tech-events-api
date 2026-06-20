@@ -1,5 +1,6 @@
 package com.lgbtplustech.events.event.domain
 
+import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -57,23 +58,4 @@ class EventTest {
             )
         }
     }
-
-    private fun testEvent(
-        title: String = "Test", capacity: Int = 50,
-        startsAt: Instant = Instant.parse("2026-07-01T18:30:00Z"),
-        endsAt: Instant = Instant.parse("2026-07-01T21:00:00Z"),
-        createdAt: Instant = Instant.parse("2026-06-01T10:00:00Z"),
-        updatedAt: Instant = Instant.parse("2026-06-01T10:00:00Z")
-    ) = Event(
-        id = UUID.randomUUID(),
-        title = title,
-        description = "Monthly meetup",
-        startsAt = startsAt,
-        endsAt = endsAt,
-        venueName = "Example Venue",
-        venueAddress = "Barcelona",
-        capacity = capacity,
-        createdAt = createdAt,
-        updatedAt = updatedAt
-    )
 }
