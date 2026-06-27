@@ -1,6 +1,8 @@
 package com.lgbtplustech.events.event.infrastructure.web
 
 import com.lgbtplustech.events.event.application.CreateEvent
+import com.lgbtplustech.events.event.application.GetEvent
+import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
@@ -10,6 +12,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import java.util.UUID
 
@@ -21,6 +24,9 @@ class EventControllerTest(
 
     @MockitoBean
     lateinit var createEvent: CreateEvent
+
+    @MockitoBean
+    lateinit var getEvent: GetEvent
 
     @Test
     fun `controller should create event properly from request`() {
@@ -47,6 +53,31 @@ class EventControllerTest(
                 status { isCreated() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 jsonPath("$.id") { value(eventId.toString()) }
+            }
+    }
+
+    @Test
+    fun `returns event`() {
+        val event = testEvent()
+        whenever(getEvent.execute(event.id))
+            .thenReturn(event)
+
+        mockMvc.get("/events/${event.id}")
+            .andExpect {
+                status { isOk() }
+                jsonPath("$.id") { value(event.id.toString()) }
+                jsonPath("$.title") { value(event.title) }
+            }
+    }
+
+    @Test
+    fun `returns 404 when event does not exist`() {
+        whenever(getEvent.execute(any()))
+            .thenReturn(null)
+
+        mockMvc.get("/events/${UUID.randomUUID()}")
+            .andExpect {
+                status { isNotFound() }
             }
     }
 }

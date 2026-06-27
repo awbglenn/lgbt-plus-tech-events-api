@@ -2,17 +2,23 @@ package com.lgbtplustech.events.event.infrastructure.web
 
 import com.lgbtplustech.events.event.application.CreateEvent
 import com.lgbtplustech.events.event.application.CreateEventCommand
+import com.lgbtplustech.events.event.application.EventNotFoundException
+import com.lgbtplustech.events.event.application.GetEvent
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/events")
 class EventController(
-    private val createEvent: CreateEvent
+    private val createEvent: CreateEvent,
+    private val getEvent: GetEvent
 ) {
 
     @PostMapping
@@ -31,5 +37,12 @@ class EventController(
         )
 
         return CreateEventResponse(id)
+    }
+
+    @GetMapping("/{id}")
+    fun get(@PathVariable id: UUID): EventResponse {
+        val event = getEvent.execute(id) ?: throw EventNotFoundException(id)
+
+        return event.toResponse()
     }
 }
