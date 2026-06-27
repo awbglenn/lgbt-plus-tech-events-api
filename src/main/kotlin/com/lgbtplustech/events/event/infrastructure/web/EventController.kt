@@ -4,6 +4,7 @@ import com.lgbtplustech.events.event.application.CreateEvent
 import com.lgbtplustech.events.event.application.CreateEventCommand
 import com.lgbtplustech.events.event.application.EventNotFoundException
 import com.lgbtplustech.events.event.application.GetEvent
+import com.lgbtplustech.events.event.application.GetEvents
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,7 +19,8 @@ import java.util.UUID
 @RequestMapping("/events")
 class EventController(
     private val createEvent: CreateEvent,
-    private val getEvent: GetEvent
+    private val getEvent: GetEvent,
+    private val getEvents: GetEvents
 ) {
 
     @PostMapping
@@ -45,4 +47,10 @@ class EventController(
 
         return event.toResponse()
     }
+
+    //TODO add pagination e.g. GET /events?page=0&size=20
+    @GetMapping
+    fun getAll(): List<EventResponse> =
+        getEvents.execute()
+            .map { it.toResponse() }
 }
