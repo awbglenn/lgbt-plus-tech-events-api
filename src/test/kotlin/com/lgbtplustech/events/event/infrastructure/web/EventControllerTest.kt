@@ -61,6 +61,48 @@ class EventControllerTest(
     }
 
     @Test
+    fun `should return bad request when title is blank`() {
+        mockMvc.post("/events") {
+            contentType = MediaType.APPLICATION_JSON
+            content = """
+            {
+              "title": "",
+              "description": "Monthly meetup",
+              "startsAt": "2026-07-01T18:30:00Z",
+              "endsAt": "2026-07-01T21:00:00Z",
+              "venueName": "Example Venue",
+              "venueAddress": "Barcelona",
+              "capacity": 50
+            }
+        """.trimIndent()
+        }
+            .andExpect {
+                status { isBadRequest() }
+            }
+    }
+
+    @Test
+    fun `should return bad request when capacity is not positive`() {
+        mockMvc.post("/events") {
+            contentType = MediaType.APPLICATION_JSON
+            content = """
+            {
+              "title": "LGBT+Tech Barcelona",
+              "description": "Monthly meetup",
+              "startsAt": "2026-07-01T18:30:00Z",
+              "endsAt": "2026-07-01T21:00:00Z",
+              "venueName": "Example Venue",
+              "venueAddress": "Barcelona",
+              "capacity": 0
+            }
+        """.trimIndent()
+        }
+            .andExpect {
+                status { isBadRequest() }
+            }
+    }
+
+    @Test
     fun `should return an event`() {
         val event = testEvent()
         whenever(getEvent.execute(event.id))

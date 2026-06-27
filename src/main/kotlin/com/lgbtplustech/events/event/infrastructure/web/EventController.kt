@@ -5,6 +5,7 @@ import com.lgbtplustech.events.event.application.CreateEventCommand
 import com.lgbtplustech.events.event.application.EventNotFoundException
 import com.lgbtplustech.events.event.application.GetEvent
 import com.lgbtplustech.events.event.application.GetEvents
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -25,7 +26,7 @@ class EventController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody request: CreateEventRequest): CreateEventResponse {
+    fun create(@Valid @RequestBody request: CreateEventRequest): CreateEventResponse {
         val id = createEvent.execute(
             CreateEventCommand(
                 title = request.title,
