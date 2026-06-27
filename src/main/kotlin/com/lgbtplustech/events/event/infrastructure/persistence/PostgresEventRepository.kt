@@ -20,4 +20,8 @@ class PostgresEventRepository(
         repository.findById(id)
             .map { it.toDomain() }
             .orElse(null)
+
+    override fun findAll(): List<Event> =
+        repository.findAll()
+            .map { it.toDomain() }
 }

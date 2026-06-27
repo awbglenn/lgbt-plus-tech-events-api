@@ -18,4 +18,7 @@ class FakeEventRepository : EventRepository {
 
     override fun findById(id: UUID): Event? =
         events[id]
+
+    override fun findAll(): List<Event> =
+        events.values.toList()
 }
