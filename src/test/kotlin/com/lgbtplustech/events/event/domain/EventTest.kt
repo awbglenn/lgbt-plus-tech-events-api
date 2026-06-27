@@ -4,8 +4,11 @@ import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.time.Instant
 import java.util.UUID
+import java.util.stream.Stream
 
 class EventTest {
 
@@ -58,4 +61,31 @@ class EventTest {
             )
         }
     }
+
+    @Test
+    fun `should publish draft event`() {
+        val event = testEvent()
+
+        event.publish()
+
+        assertEquals(EventStatus.PUBLISHED, event.status)
+    }
+
+    @ParameterizedTest
+    @MethodSource("incompletePublishableEvents")
+    fun `cannot publish incomplete event`(event: Event) {
+        assertThrows<IllegalStateException> {
+            event.publish()
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun incompletePublishableEvents(): Stream<Event> = Stream.of(
+            testEvent(description = ""),
+            testEvent(venueName = ""),
+            testEvent(venueAddress = "")
+        )
+    }
+
 }
