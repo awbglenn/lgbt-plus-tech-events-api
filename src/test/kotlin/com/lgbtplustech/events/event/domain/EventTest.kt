@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.time.Instant
-import java.util.UUID
 import java.util.stream.Stream
 
 class EventTest {
@@ -71,9 +71,12 @@ class EventTest {
         assertEquals(EventStatus.PUBLISHED, event.status)
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "cannot publish event without {0}")
     @MethodSource("incompletePublishableEvents")
-    fun `cannot publish incomplete event`(event: Event) {
+    fun `cannot publish incomplete event`(
+        field: String,
+        event: Event
+    ) {
         assertThrows<IllegalStateException> {
             event.publish()
         }
@@ -81,10 +84,10 @@ class EventTest {
 
     companion object {
         @JvmStatic
-        fun incompletePublishableEvents(): Stream<Event> = Stream.of(
-            testEvent(description = ""),
-            testEvent(venueName = ""),
-            testEvent(venueAddress = "")
+        fun incompletePublishableEvents(): Stream<Arguments> = Stream.of(
+            Arguments.of("description", testEvent(description = "")),
+            Arguments.of("venue name", testEvent(venueName = "")),
+            Arguments.of("venue address", testEvent(venueAddress = ""))
         )
     }
 
