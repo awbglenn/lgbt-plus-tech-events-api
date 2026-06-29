@@ -1,4 +1,4 @@
-package com.lgbtplustech.events.event.application
+package com.lgbtplustech.events.event.application.command
 
 import java.time.Instant
 

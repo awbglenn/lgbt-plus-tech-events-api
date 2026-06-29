@@ -1,5 +1,7 @@
 package com.lgbtplustech.events.event.application
 
+import com.lgbtplustech.events.event.application.port.GetEvents
+import com.lgbtplustech.events.event.application.usecase.GetEventsUseCase
 import com.lgbtplustech.events.testing.FakeEventRepository
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Assertions.*

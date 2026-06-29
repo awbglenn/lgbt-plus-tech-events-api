@@ -1,6 +1,6 @@
 package com.lgbtplustech.events.config
 
-import com.lgbtplustech.events.event.application.EventNotFoundException
+import com.lgbtplustech.events.event.application.exception.EventNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus

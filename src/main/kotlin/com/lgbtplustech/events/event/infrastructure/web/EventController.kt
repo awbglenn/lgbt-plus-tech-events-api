@@ -1,10 +1,10 @@
 package com.lgbtplustech.events.event.infrastructure.web
 
-import com.lgbtplustech.events.event.application.CreateEvent
-import com.lgbtplustech.events.event.application.CreateEventCommand
-import com.lgbtplustech.events.event.application.EventNotFoundException
-import com.lgbtplustech.events.event.application.GetEvent
-import com.lgbtplustech.events.event.application.GetEvents
+import com.lgbtplustech.events.event.application.port.CreateEvent
+import com.lgbtplustech.events.event.application.command.CreateEventCommand
+import com.lgbtplustech.events.event.application.exception.EventNotFoundException
+import com.lgbtplustech.events.event.application.port.GetEvent
+import com.lgbtplustech.events.event.application.port.GetEvents
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping

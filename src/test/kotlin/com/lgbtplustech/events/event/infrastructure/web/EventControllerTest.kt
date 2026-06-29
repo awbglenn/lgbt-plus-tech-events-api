@@ -1,8 +1,8 @@
 package com.lgbtplustech.events.event.infrastructure.web
 
-import com.lgbtplustech.events.event.application.CreateEvent
-import com.lgbtplustech.events.event.application.GetEvent
-import com.lgbtplustech.events.event.application.GetEvents
+import com.lgbtplustech.events.event.application.port.CreateEvent
+import com.lgbtplustech.events.event.application.port.GetEvent
+import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any

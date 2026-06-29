@@ -1,5 +1,8 @@
-package com.lgbtplustech.events.event.application
+package com.lgbtplustech.events.event.application.usecase
 
+import com.lgbtplustech.events.event.application.exception.EventNotFoundException
+import com.lgbtplustech.events.event.application.port.EventRepository
+import com.lgbtplustech.events.event.application.port.PublishEvent
 import org.springframework.stereotype.Service
 import java.util.UUID
 

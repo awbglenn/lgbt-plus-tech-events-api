@@ -1,6 +1,6 @@
 package com.lgbtplustech.events.event.infrastructure.persistence
 
-import com.lgbtplustech.events.event.application.EventRepository
+import com.lgbtplustech.events.event.application.port.EventRepository
 import com.lgbtplustech.events.event.domain.Event
 import org.springframework.stereotype.Component
 import java.util.UUID

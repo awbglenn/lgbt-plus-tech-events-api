@@ -1,4 +1,4 @@
-package com.lgbtplustech.events.event.application
+package com.lgbtplustech.events.event.application.port
 
 import java.util.UUID
 
