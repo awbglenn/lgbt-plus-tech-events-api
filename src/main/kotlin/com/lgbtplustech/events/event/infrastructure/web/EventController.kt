@@ -9,6 +9,7 @@ import com.lgbtplustech.events.event.application.port.PublishEvent
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -58,7 +59,7 @@ class EventController(
             .map { it.toResponse() }
 
     //TODO add authentication here, only admins/organisers can publish events
-    @PostMapping("/{id}/publish")
+    @PatchMapping("/{id}/publish")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun publish(@PathVariable id: UUID) {
         publishEvent.execute(id)

@@ -16,6 +16,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 import java.util.UUID
 
@@ -153,7 +154,7 @@ class EventControllerTest(
     fun `should publish event`() {
         val eventId = UUID.randomUUID()
 
-        mockMvc.post("/events/$eventId/publish")
+        mockMvc.patch("/events/$eventId/publish")
             .andExpect {
                 status { isNoContent() }
             }
