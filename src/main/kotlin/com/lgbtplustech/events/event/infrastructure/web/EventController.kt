@@ -5,6 +5,7 @@ import com.lgbtplustech.events.event.application.command.CreateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
+import com.lgbtplustech.events.event.application.port.PublishEvent
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,7 +22,8 @@ import java.util.UUID
 class EventController(
     private val createEvent: CreateEvent,
     private val getEvent: GetEvent,
-    private val getEvents: GetEvents
+    private val getEvents: GetEvents,
+    private val publishEvent: PublishEvent,
 ) {
 
     @PostMapping
@@ -54,4 +56,11 @@ class EventController(
     fun getAll(): List<EventResponse> =
         getEvents.execute()
             .map { it.toResponse() }
+
+    //TODO add authentication here, only admins/organisers can publish events
+    @PostMapping("/{id}/publish")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun publish(@PathVariable id: UUID) {
+        publishEvent.execute(id)
+    }
 }

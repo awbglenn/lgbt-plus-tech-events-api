@@ -3,10 +3,12 @@ package com.lgbtplustech.events.event.infrastructure.web
 import com.lgbtplustech.events.event.application.port.CreateEvent
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
+import com.lgbtplustech.events.event.application.port.PublishEvent
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
+import org.mockito.kotlin.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
@@ -31,6 +33,9 @@ class EventControllerTest(
 
     @MockitoBean
     lateinit var getEvents: GetEvents
+
+    @MockitoBean
+    lateinit var publishEvent: PublishEvent
 
     @Test
     fun `should create event properly from request`() {
@@ -142,5 +147,17 @@ class EventControllerTest(
                 jsonPath("$[0].title") { value(first.title) }
                 jsonPath("$[1].title") { value(second.title) }
             }
+    }
+
+    @Test
+    fun `should publish event`() {
+        val eventId = UUID.randomUUID()
+
+        mockMvc.post("/events/$eventId/publish")
+            .andExpect {
+                status { isNoContent() }
+            }
+
+        verify(publishEvent).execute(eventId)
     }
 }
