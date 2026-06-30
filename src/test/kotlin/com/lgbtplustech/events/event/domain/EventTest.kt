@@ -1,5 +1,6 @@
 package com.lgbtplustech.events.event.domain
 
+import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -77,7 +78,7 @@ class EventTest {
         field: String,
         event: Event
     ) {
-        assertThrows<IllegalStateException> {
+        assertThrows<EventCannotBePublishedException> {
             event.publish()
         }
     }

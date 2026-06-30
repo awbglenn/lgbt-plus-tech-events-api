@@ -1,5 +1,6 @@
 package com.lgbtplustech.events.event.domain
 
+import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import java.time.Instant
 import java.util.UUID
 
@@ -31,16 +32,23 @@ class Event(
 
     fun publish() {
         check(status == EventStatus.DRAFT) {
-            "Only draft events can be published"
+            throw EventCannotBePublishedException(
+                "Only draft events can be published"
+            )
         }
         check(description.isNotBlank()) {
-            "Description is required to publish an event"
+            throw EventCannotBePublishedException(
+                "Description is required to publish an event"
+            )
         }
         check(venueName.isNotBlank()) {
-            "Venue name is required to publish an event"
+            throw EventCannotBePublishedException(
+                "Venue name is required to publish an event"
+            )
         }
         check(venueAddress.isNotBlank()) {
-            "Venue address is required to publish an event"
+            throw EventCannotBePublishedException(
+                "Venue address is required to publish an event"            )
         }
         status = EventStatus.PUBLISHED
     }
