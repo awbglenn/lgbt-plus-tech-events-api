@@ -2,6 +2,7 @@ package com.lgbtplustech.events.event.infrastructure.web
 
 import com.lgbtplustech.events.event.application.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
+import com.lgbtplustech.events.event.application.port.CancelEvent
 import com.lgbtplustech.events.event.application.port.CreateEvent
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
@@ -47,6 +48,9 @@ class EventControllerTest(
 
     @MockitoBean
     lateinit var updateEvent: UpdateEvent
+
+    @MockitoBean
+    lateinit var cancelEvent: CancelEvent
 
     @Test
     fun `should create event properly from request`() {
@@ -172,6 +176,44 @@ class EventControllerTest(
         verify(publishEvent).execute(eventId)
     }
 
+    @Test
+    fun `should cancel event`() {
+        val eventId = UUID.randomUUID()
+
+        mockMvc.patch("/events/$eventId/cancel")
+            .andExpect {
+                status { isNoContent() }
+            }
+
+        verify(cancelEvent).execute(eventId)
+    }
+
+    @Test
+    fun `updates event`() {
+        val eventId = UUID.randomUUID()
+
+        mockMvc.patch("/events/$eventId") {
+            contentType = MediaType.APPLICATION_JSON
+            content = """
+            {
+                "title": "Updated title",
+                "capacity": 100
+            }
+        """.trimIndent()
+        }
+            .andExpect {
+                status { isNoContent() }
+            }
+
+        verify(updateEvent).execute(
+            UpdateEventCommand(
+                id = eventId,
+                title = "Updated title",
+                capacity = 100
+            )
+        )
+    }
+
     @ParameterizedTest(name = "{0}")
     @MethodSource("eventCannotBePublishedExceptions")
     fun `returns problem details when event cannot be published`(
@@ -207,32 +249,6 @@ class EventControllerTest(
             Arguments.of(
                 "missing venue address",
                 "Venue address is required to publish an event"
-            )
-        )
-    }
-
-    @Test
-    fun `updates event`() {
-        val eventId = UUID.randomUUID()
-
-        mockMvc.patch("/events/$eventId") {
-            contentType = MediaType.APPLICATION_JSON
-            content = """
-            {
-                "title": "Updated title",
-                "capacity": 100
-            }
-        """.trimIndent()
-        }
-            .andExpect {
-                status { isNoContent() }
-            }
-
-        verify(updateEvent).execute(
-            UpdateEventCommand(
-                id = eventId,
-                title = "Updated title",
-                capacity = 100
             )
         )
     }

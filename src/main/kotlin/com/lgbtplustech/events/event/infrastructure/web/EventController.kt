@@ -4,6 +4,7 @@ import com.lgbtplustech.events.event.application.port.CreateEvent
 import com.lgbtplustech.events.event.application.command.CreateEventCommand
 import com.lgbtplustech.events.event.application.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
+import com.lgbtplustech.events.event.application.port.CancelEvent
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.application.port.PublishEvent
@@ -28,7 +29,8 @@ class EventController(
     private val getEvent: GetEvent,
     private val getEvents: GetEvents,
     private val publishEvent: PublishEvent,
-    private val updateEvent: UpdateEvent
+    private val updateEvent: UpdateEvent,
+    private val cancelEvent: CancelEvent
 ) {
 
     @PostMapping
@@ -88,5 +90,12 @@ class EventController(
                 capacity = request.capacity
             )
         )
+    }
+
+    //TODO add authentication here, only admins/organisers can cancel events
+    @PatchMapping("/{id}/cancel")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun cancel(@PathVariable id: UUID) {
+        cancelEvent.execute(id)
     }
 }
