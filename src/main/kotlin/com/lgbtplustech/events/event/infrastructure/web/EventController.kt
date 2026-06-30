@@ -2,14 +2,13 @@ package com.lgbtplustech.events.event.infrastructure.web
 
 import com.lgbtplustech.events.event.application.port.CreateEvent
 import com.lgbtplustech.events.event.application.command.CreateEventCommand
+import com.lgbtplustech.events.event.application.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.application.port.PublishEvent
-import com.lgbtplustech.events.event.infrastructure.web.dto.CreateEventRequest
-import com.lgbtplustech.events.event.infrastructure.web.dto.CreateEventResponse
-import com.lgbtplustech.events.event.infrastructure.web.dto.EventResponse
-import com.lgbtplustech.events.event.infrastructure.web.dto.toResponse
+import com.lgbtplustech.events.event.application.port.UpdateEvent
+import com.lgbtplustech.events.event.infrastructure.web.dto.*
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,6 +28,7 @@ class EventController(
     private val getEvent: GetEvent,
     private val getEvents: GetEvents,
     private val publishEvent: PublishEvent,
+    private val updateEvent: UpdateEvent
 ) {
 
     @PostMapping
@@ -67,5 +67,26 @@ class EventController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun publish(@PathVariable id: UUID) {
         publishEvent.execute(id)
+    }
+
+    //TODO add authentication here, only admins/organisers can edit events
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun update(
+        @PathVariable id: UUID,
+        @RequestBody request: UpdateEventRequest
+    ) {
+        updateEvent.execute(
+            UpdateEventCommand(
+                id = id,
+                title = request.title,
+                description = request.description,
+                startsAt = request.startsAt,
+                endsAt = request.endsAt,
+                venueName = request.venueName,
+                venueAddress = request.venueAddress,
+                capacity = request.capacity
+            )
+        )
     }
 }

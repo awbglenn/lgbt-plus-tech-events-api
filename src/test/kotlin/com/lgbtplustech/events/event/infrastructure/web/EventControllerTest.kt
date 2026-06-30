@@ -1,10 +1,12 @@
 package com.lgbtplustech.events.event.infrastructure.web
 
+import com.lgbtplustech.events.event.application.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.event.application.port.CreateEvent
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.application.port.PublishEvent
+import com.lgbtplustech.events.event.application.port.UpdateEvent
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -42,6 +44,9 @@ class EventControllerTest(
 
     @MockitoBean
     lateinit var publishEvent: PublishEvent
+
+    @MockitoBean
+    lateinit var updateEvent: UpdateEvent
 
     @Test
     fun `should create event properly from request`() {
@@ -202,6 +207,32 @@ class EventControllerTest(
             Arguments.of(
                 "missing venue address",
                 "Venue address is required to publish an event"
+            )
+        )
+    }
+
+    @Test
+    fun `updates event`() {
+        val eventId = UUID.randomUUID()
+
+        mockMvc.patch("/events/$eventId") {
+            contentType = MediaType.APPLICATION_JSON
+            content = """
+            {
+                "title": "Updated title",
+                "capacity": 100
+            }
+        """.trimIndent()
+        }
+            .andExpect {
+                status { isNoContent() }
+            }
+
+        verify(updateEvent).execute(
+            UpdateEventCommand(
+                id = eventId,
+                title = "Updated title",
+                capacity = 100
             )
         )
     }
