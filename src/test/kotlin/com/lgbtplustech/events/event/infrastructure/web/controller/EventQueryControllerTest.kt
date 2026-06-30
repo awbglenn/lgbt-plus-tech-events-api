@@ -1,4 +1,4 @@
-package com.lgbtplustech.events.event.infrastructure.web
+package com.lgbtplustech.events.event.infrastructure.web.controller
 
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents

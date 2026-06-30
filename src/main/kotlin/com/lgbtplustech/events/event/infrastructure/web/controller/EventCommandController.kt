@@ -1,18 +1,14 @@
-package com.lgbtplustech.events.event.infrastructure.web
+package com.lgbtplustech.events.event.infrastructure.web.controller
 
 import com.lgbtplustech.events.event.application.port.CreateEvent
 import com.lgbtplustech.events.event.application.command.CreateEventCommand
 import com.lgbtplustech.events.event.application.command.UpdateEventCommand
-import com.lgbtplustech.events.event.application.exception.EventNotFoundException
 import com.lgbtplustech.events.event.application.port.CancelEvent
-import com.lgbtplustech.events.event.application.port.GetEvent
-import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.application.port.PublishEvent
 import com.lgbtplustech.events.event.application.port.UpdateEvent
 import com.lgbtplustech.events.event.infrastructure.web.dto.*
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
