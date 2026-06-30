@@ -1,5 +1,6 @@
 package com.lgbtplustech.events.event.application.usecase
 
+import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
 import com.lgbtplustech.events.event.application.port.EventRepository
 import com.lgbtplustech.events.event.application.port.PublishEvent
@@ -15,7 +16,11 @@ class PublishEventUseCase(
         val event = eventRepository.findById(id)
             ?: throw EventNotFoundException(id)
 
-        event.publish()
+        try {
+            event.publish()
+        } catch (e: IllegalStateException) {
+            throw EventCannotBePublishedException(e.message ?: "Event cannot be published")
+        }
 
         eventRepository.save(event)
     }
