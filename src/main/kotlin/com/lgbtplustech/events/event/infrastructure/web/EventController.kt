@@ -6,6 +6,10 @@ import com.lgbtplustech.events.event.application.exception.EventNotFoundExceptio
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.application.port.PublishEvent
+import com.lgbtplustech.events.event.infrastructure.web.dto.CreateEventRequest
+import com.lgbtplustech.events.event.infrastructure.web.dto.CreateEventResponse
+import com.lgbtplustech.events.event.infrastructure.web.dto.EventResponse
+import com.lgbtplustech.events.event.infrastructure.web.dto.toResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping

@@ -1,4 +1,4 @@
-package com.lgbtplustech.events.event.infrastructure.web
+package com.lgbtplustech.events.event.infrastructure.web.dto
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Positive
