@@ -97,4 +97,16 @@ class Event(
         this.capacity = capacity
         this.updatedAt = updatedAt
     }
+
+    fun cancel() {
+        check(status != EventStatus.CANCELLED) {
+            "Event is already cancelled"
+        }
+
+        check(status != EventStatus.COMPLETED) {
+            "Completed events cannot be cancelled"
+        }
+
+        status = EventStatus.CANCELLED
+    }
 }

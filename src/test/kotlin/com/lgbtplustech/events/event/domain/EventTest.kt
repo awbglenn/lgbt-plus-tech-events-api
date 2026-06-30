@@ -126,6 +126,35 @@ class EventTest {
         assertEquals("Updated published event", event.title)
     }
 
+    @Test
+    fun `cancels draft event`() {
+        val event = testEvent()
+
+        event.cancel()
+
+        assertEquals(EventStatus.CANCELLED, event.status)
+    }
+
+    @Test
+    fun `cancels published event`() {
+        val event = testEvent()
+        event.publish()
+
+        event.cancel()
+
+        assertEquals(EventStatus.CANCELLED, event.status)
+    }
+
+    @Test
+    fun `cannot cancel already cancelled event`() {
+        val event = testEvent()
+        event.cancel()
+
+        assertThrows<IllegalStateException> {
+            event.cancel()
+        }
+    }
+
     @ParameterizedTest(name = "cannot update published event when {0}")
     @MethodSource("incompletePublishedEventUpdates")
     fun `cannot update published event with incomplete details`(
