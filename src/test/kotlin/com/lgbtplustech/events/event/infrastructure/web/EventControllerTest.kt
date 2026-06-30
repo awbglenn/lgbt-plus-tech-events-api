@@ -1,11 +1,15 @@
 package com.lgbtplustech.events.event.infrastructure.web
 
+import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.event.application.port.CreateEvent
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.application.port.PublishEvent
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 import org.mockito.kotlin.verify
@@ -19,6 +23,7 @@ import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 import java.util.UUID
+import java.util.stream.Stream
 
 @WebMvcTest(EventController::class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -160,5 +165,44 @@ class EventControllerTest(
             }
 
         verify(publishEvent).execute(eventId)
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("eventCannotBePublishedExceptions")
+    fun `returns problem details when event cannot be published`(
+        scenario: String,
+        exceptionMessage: String
+    ) {
+        val eventId = UUID.randomUUID()
+
+        whenever(publishEvent.execute(eventId))
+            .thenThrow(EventCannotBePublishedException(exceptionMessage))
+
+        mockMvc.patch("/events/$eventId/publish")
+            .andExpect {
+                status { isConflict() }
+                content { contentType("application/problem+json") }
+                jsonPath("$.title") { value("Event cannot be published") }
+                jsonPath("$.status") { value(409) }
+                jsonPath("$.detail") { value(exceptionMessage) }
+            }
+    }
+
+    companion object {
+        @JvmStatic
+        fun eventCannotBePublishedExceptions(): Stream<Arguments> = Stream.of(
+            Arguments.of(
+                "missing description",
+                "Description is required to publish an event"
+            ),
+            Arguments.of(
+                "missing venue name",
+                "Venue name is required to publish an event"
+            ),
+            Arguments.of(
+                "missing venue address",
+                "Venue address is required to publish an event"
+            )
+        )
     }
 }
