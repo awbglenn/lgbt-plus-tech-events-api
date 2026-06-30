@@ -24,10 +24,8 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("/events")
-class EventController(
+class EventCommandController(
     private val createEvent: CreateEvent,
-    private val getEvent: GetEvent,
-    private val getEvents: GetEvents,
     private val publishEvent: PublishEvent,
     private val updateEvent: UpdateEvent,
     private val cancelEvent: CancelEvent
@@ -50,19 +48,6 @@ class EventController(
 
         return CreateEventResponse(id)
     }
-
-    @GetMapping("/{id}")
-    fun get(@PathVariable id: UUID): EventResponse {
-        val event = getEvent.execute(id) ?: throw EventNotFoundException(id)
-
-        return event.toResponse()
-    }
-
-    //TODO add pagination e.g. GET /events?page=0&size=20
-    @GetMapping
-    fun getAll(): List<EventResponse> =
-        getEvents.execute()
-            .map { it.toResponse() }
 
     //TODO add authentication here, only admins/organisers can publish events
     @PatchMapping("/{id}/publish")
