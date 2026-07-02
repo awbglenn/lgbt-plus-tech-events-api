@@ -154,6 +154,27 @@ class EventTest {
         }
     }
 
+    @Test
+    fun `completes published event`() {
+        val event = testEvent()
+        event.publish()
+
+        event.complete()
+
+        assertEquals(EventStatus.COMPLETED, event.status)
+    }
+
+    @ParameterizedTest(name = "cannot complete event when status is {0}")
+    @MethodSource("eventsThatCannotBeCompleted")
+    fun `cannot complete event unless published`(
+        status: String,
+        event: Event
+    ) {
+        assertThrows<IllegalStateException> {
+            event.complete()
+        }
+    }
+
     @ParameterizedTest(name = "cannot update published event when {0}")
     @MethodSource("incompletePublishedEventUpdates")
     fun `cannot update published event with incomplete details`(
@@ -265,6 +286,16 @@ class EventTest {
                     )
                 }),
             )
+
+        @JvmStatic
+        fun eventsThatCannotBeCompleted(): Stream<Arguments> = Stream.of(
+            Arguments.of("DRAFT", testEvent()),
+            Arguments.of("CANCELLED", testEvent().apply { cancel() }),
+            Arguments.of("COMPLETED", testEvent().apply {
+                publish()
+                complete()
+            })
+        )
 
     }
 }

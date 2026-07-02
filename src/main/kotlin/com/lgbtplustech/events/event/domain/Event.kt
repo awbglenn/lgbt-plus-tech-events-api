@@ -90,6 +90,14 @@ class Event(
         this.updatedAt = updatedAt
     }
 
+    fun complete() {
+        check(status == EventStatus.PUBLISHED) {
+            "Only published events can be completed"
+        }
+
+        status = EventStatus.COMPLETED
+    }
+
     fun cancel() {
         check(status != EventStatus.CANCELLED) {
             "Event is already cancelled"
