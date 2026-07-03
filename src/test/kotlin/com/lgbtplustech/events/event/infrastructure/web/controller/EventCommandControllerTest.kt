@@ -1,8 +1,10 @@
 package com.lgbtplustech.events.event.infrastructure.web.controller
 
 import com.lgbtplustech.events.event.application.command.UpdateEventCommand
+import com.lgbtplustech.events.event.application.exception.EventCannotBeCompletedException
 import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.event.application.port.CancelEvent
+import com.lgbtplustech.events.event.application.port.CompleteEvent
 import com.lgbtplustech.events.event.application.port.CreateEvent
 import com.lgbtplustech.events.event.application.port.PublishEvent
 import com.lgbtplustech.events.event.application.port.UpdateEvent
@@ -41,6 +43,9 @@ class EventCommandControllerTest(
 
     @MockitoBean
     lateinit var cancelEvent: CancelEvent
+
+    @MockitoBean
+    lateinit var completeEvent: CompleteEvent
 
     @Test
     fun `should create event properly from request`() {
@@ -160,6 +165,41 @@ class EventCommandControllerTest(
                 capacity = 100
             )
         )
+    }
+
+    @Test
+    fun `completes event`() {
+        val eventId = UUID.randomUUID()
+
+        mockMvc.patch("/events/$eventId/complete")
+            .andExpect {
+                status { isNoContent() }
+            }
+
+        verify(completeEvent).execute(eventId)
+    }
+
+    @Test
+    fun `returns problem details when event cannot be completed`() {
+        val eventId = UUID.randomUUID()
+
+        whenever(completeEvent.execute(eventId))
+            .thenThrow(
+                EventCannotBeCompletedException(
+                    "An event cannot be completed before it has ended"
+                )
+            )
+
+        mockMvc.patch("/events/$eventId/complete")
+            .andExpect {
+                status { isConflict() }
+                content { contentType("application/problem+json") }
+                jsonPath("$.title") { value("Event cannot be completed") }
+                jsonPath("$.status") { value(409) }
+                jsonPath("$.detail") {
+                    value("An event cannot be completed before it has ended")
+                }
+            }
     }
 
     @ParameterizedTest(name = "{0}")

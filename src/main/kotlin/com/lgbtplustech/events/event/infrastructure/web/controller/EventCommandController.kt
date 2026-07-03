@@ -4,6 +4,7 @@ import com.lgbtplustech.events.event.application.port.CreateEvent
 import com.lgbtplustech.events.event.application.command.CreateEventCommand
 import com.lgbtplustech.events.event.application.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.port.CancelEvent
+import com.lgbtplustech.events.event.application.port.CompleteEvent
 import com.lgbtplustech.events.event.application.port.PublishEvent
 import com.lgbtplustech.events.event.application.port.UpdateEvent
 import com.lgbtplustech.events.event.infrastructure.web.dto.*
@@ -24,9 +25,11 @@ class EventCommandController(
     private val createEvent: CreateEvent,
     private val publishEvent: PublishEvent,
     private val updateEvent: UpdateEvent,
-    private val cancelEvent: CancelEvent
+    private val cancelEvent: CancelEvent,
+    private val completeEvent: CompleteEvent
 ) {
 
+    //TODO add authentication here, only admins/organisers can create events
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@Valid @RequestBody request: CreateEventRequest): CreateEventResponse {
@@ -78,5 +81,12 @@ class EventCommandController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun cancel(@PathVariable id: UUID) {
         cancelEvent.execute(id)
+    }
+
+    //TODO add authentication here, only admins/organisers can complete events
+    @PatchMapping("/{id}/complete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun complete(@PathVariable id: UUID) {
+        completeEvent.execute(id)
     }
 }
