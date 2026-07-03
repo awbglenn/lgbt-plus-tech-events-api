@@ -1,5 +1,6 @@
 package com.lgbtplustech.events.config
 
+import com.lgbtplustech.events.event.application.exception.EventCannotBeCompletedException
 import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
 import org.springframework.http.HttpStatus
@@ -30,5 +31,16 @@ class GlobalExceptionHandler {
             exception.message ?: "Event cannot be published"
         ).apply {
             title = "Event cannot be published"
+        }
+
+    @ExceptionHandler(EventCannotBeCompletedException::class)
+    fun handleEventCannotBeCompleted(
+        exception: EventCannotBeCompletedException
+    ): ProblemDetail =
+        ProblemDetail.forStatusAndDetail(
+            HttpStatus.CONFLICT,
+            exception.message ?: "Event cannot be completed"
+        ).apply {
+            title = "Event cannot be completed"
         }
 }
