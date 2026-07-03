@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
+//TODO add authentication here, only admins/organisers can use the endpoints in this controller
 @RestController
 @RequestMapping("/events")
 class EventCommandController(
@@ -29,7 +30,6 @@ class EventCommandController(
     private val completeEvent: CompleteEvent
 ) {
 
-    //TODO add authentication here, only admins/organisers can create events
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@Valid @RequestBody request: CreateEventRequest): CreateEventResponse {
@@ -48,14 +48,12 @@ class EventCommandController(
         return CreateEventResponse(id)
     }
 
-    //TODO add authentication here, only admins/organisers can publish events
     @PatchMapping("/{id}/publish")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun publish(@PathVariable id: UUID) {
         publishEvent.execute(id)
     }
 
-    //TODO add authentication here, only admins/organisers can edit events
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun update(
@@ -76,14 +74,12 @@ class EventCommandController(
         )
     }
 
-    //TODO add authentication here, only admins/organisers can cancel events
     @PatchMapping("/{id}/cancel")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun cancel(@PathVariable id: UUID) {
         cancelEvent.execute(id)
     }
 
-    //TODO add authentication here, only admins/organisers can complete events
     @PatchMapping("/{id}/complete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun complete(@PathVariable id: UUID) {
