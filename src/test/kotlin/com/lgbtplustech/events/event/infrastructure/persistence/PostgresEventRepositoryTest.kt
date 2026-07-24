@@ -1,8 +1,8 @@
 package com.lgbtplustech.events.event.infrastructure.persistence
 
-import com.lgbtplustech.events.event.domain.EventStatus
+import com.lgbtplustech.events.testing.assertEventsEqual
 import com.lgbtplustech.events.testing.testEvent
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Import
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.postgresql.PostgreSQLContainer
+import java.util.*
 
 @DataJpaTest
 @Testcontainers
@@ -28,27 +29,53 @@ class PostgresEventRepositoryTest(
     }
 
     @Test
-    fun `saves event`() {
+    fun `saves and returns event`() {
         val event = testEvent()
 
         val savedEvent = repository.save(event)
 
-        assertEquals(event.id, savedEvent.id)
-        assertEquals("LGBT+Tech Barcelona", savedEvent.title)
-        assertEquals(EventStatus.DRAFT, savedEvent.status)
-        assertEquals(event.createdAt, savedEvent.createdAt)
-        assertEquals(event.updatedAt, savedEvent.updatedAt)
+        assertEventsEqual(event, savedEvent)
     }
 
     @Test
-    fun `finds saved event`() {
-        val event = testEvent()
-        repository.save(event)
+    fun `finds event by id`() {
+        val event = repository.save(testEvent())
 
-        val found = repository.findById(event.id)
+        val foundEvent = repository.findById(event.id)
 
-        assertEquals(event.id, found?.id)
-        assertEquals(event.title, found?.title)
-        assertEquals(event.description, found?.description)
+        assertEventsEqual(event, foundEvent)
+    }
+
+    @Test
+    fun `returns null when event does not exist`() {
+        val foundEvent = repository.findById(UUID.randomUUID())
+
+        assertNull(foundEvent)
+    }
+
+    @Test
+    fun `finds all events when status is not provided`() {
+        val draftEvent = repository.save(
+            testEvent(
+                id = UUID.randomUUID(),
+                title = "Draft event",
+            )
+        )
+        val publishedEvent = testEvent(
+            id = UUID.randomUUID(),
+            title = "Published event",
+        )
+        publishedEvent.publish()
+
+        val publishedEventSaved = repository.save(
+            publishedEvent
+        )
+
+        val events = repository.findAll(null)
+
+        assertEventsEqual(
+            setOf(draftEvent, publishedEventSaved),
+            events.toSet()
+        )
     }
 }
