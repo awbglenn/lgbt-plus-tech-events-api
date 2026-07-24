@@ -59,7 +59,7 @@ _Likely flow_
 * Observability (Actuator, metrics)
 * Structured logging
 
-### Infrastructure as Code
+### Infrastructure as Code?
   * Evaluate OKD / OpenShift deployment
   * Containerise application
   * Define application deployment resources
