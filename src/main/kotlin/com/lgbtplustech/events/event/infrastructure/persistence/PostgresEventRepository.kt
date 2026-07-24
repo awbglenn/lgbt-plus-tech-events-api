@@ -23,6 +23,9 @@ class PostgresEventRepository(
             .orElse(null)
 
     override fun findAll(status: EventStatus?): List<Event> =
-        repository.findAll()
-            .map { it.toDomain() }
+        if (status == null) {
+            repository.findAll()
+        } else {
+            repository.findAllByStatus(status)
+        }.map { it.toDomain() }
 }

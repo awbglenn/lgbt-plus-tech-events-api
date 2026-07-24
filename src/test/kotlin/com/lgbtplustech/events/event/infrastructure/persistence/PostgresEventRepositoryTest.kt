@@ -1,9 +1,13 @@
 package com.lgbtplustech.events.event.infrastructure.persistence
 
+import com.lgbtplustech.events.event.domain.EventStatus
 import com.lgbtplustech.events.testing.assertEventsEqual
 import com.lgbtplustech.events.testing.testEvent
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
@@ -57,25 +61,51 @@ class PostgresEventRepositoryTest(
     fun `finds all events when status is not provided`() {
         val draftEvent = repository.save(
             testEvent(
-                id = UUID.randomUUID(),
                 title = "Draft event",
             )
         )
-        val publishedEvent = testEvent(
-            id = UUID.randomUUID(),
-            title = "Published event",
-        )
-        publishedEvent.publish()
 
-        val publishedEventSaved = repository.save(
-            publishedEvent
+        val publishedEvent = repository.save(
+            testEvent(
+                title = "Published event",
+            ).apply { publish() }
         )
 
         val events = repository.findAll(null)
 
         assertEventsEqual(
-            setOf(draftEvent, publishedEventSaved),
+            setOf(draftEvent, publishedEvent),
             events.toSet()
         )
+    }
+
+    @ParameterizedTest(name = "finds only events with status {0}")
+    @EnumSource(EventStatus::class)
+    fun `finds only events corresponding to a status`(status: EventStatus) {
+        repository.save(testEvent(
+            title = "Draft event"
+        ))
+        repository.save(testEvent(
+            title = "Published event"
+        ).apply {
+            publish()
+        })
+        repository.save(testEvent(
+            title = "Cancelled event"
+        ).apply {
+            publish()
+            cancel()
+        })
+        repository.save(testEvent(
+            title = "Completed event"
+        ).apply {
+            publish()
+            complete()
+        })
+
+        val foundEvents = repository.findAll(status)
+
+        assertEquals(1, foundEvents.size)
+        assertEquals(status, foundEvents[0].status)
     }
 }
