@@ -38,11 +38,11 @@
 _Likely flow_
 * User signs in
 * User attends an event
-* User cancels attendance
+* User can cancel attendance
 * List attendees for an event
 * Prevent duplicate attendance
-* Prevent attendance when event capacity is reached
-* Waiting list support
+* Prevent attendance when event capacity is reached? Create a waiting list?
+* Waiting list support?
 
 ## Domain
 
@@ -58,6 +58,14 @@ _Likely flow_
 * Docker image for application
 * Observability (Actuator, metrics)
 * Structured logging
+
+### Infrastructure as Code
+  * Evaluate OKD / OpenShift deployment
+  * Containerise application
+  * Define application deployment resources
+  * Provision PostgreSQL infrastructure
+  * Manage environment-specific configuration
+  * Manage secrets outside source control
 
 ## Nice to Have
 
