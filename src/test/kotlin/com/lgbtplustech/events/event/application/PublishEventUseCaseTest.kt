@@ -24,10 +24,9 @@ class PublishEventUseCaseTest {
         val repository = FakeEventRepository()
         val event = testEvent()
         repository.save(event)
-        val publishEvent: PublishEvent =
-            PublishEventUseCase(repository)
+        val useCase: PublishEvent = PublishEventUseCase(repository)
 
-        publishEvent.execute(event.id)
+        useCase.execute(event.id)
 
         assertEquals(
             EventStatus.PUBLISHED,
@@ -38,12 +37,10 @@ class PublishEventUseCaseTest {
     @Test
     fun `throws when event does not exist`() {
         val repository = FakeEventRepository()
-
-        val publishEvent: PublishEvent =
-            PublishEventUseCase(repository)
+        val useCase: PublishEvent = PublishEventUseCase(repository)
 
         assertThrows<EventNotFoundException> {
-            publishEvent.execute(UUID.randomUUID())
+            useCase.execute(UUID.randomUUID())
         }
     }
 
@@ -55,12 +52,10 @@ class PublishEventUseCaseTest {
     ) {
         val repository = FakeEventRepository()
         repository.save(event)
-
-        val publishEvent: PublishEvent =
-            PublishEventUseCase(repository)
+        val useCase: PublishEvent = PublishEventUseCase(repository)
 
         assertThrows<EventCannotBePublishedException> {
-            publishEvent.execute(event.id)
+            useCase.execute(event.id)
         }
     }
 

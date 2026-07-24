@@ -3,6 +3,7 @@ package com.lgbtplustech.events.event.application
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.usecase.GetEventUseCase
 import com.lgbtplustech.events.testing.FakeEventRepository
+import com.lgbtplustech.events.testing.assertEventsEqual
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
@@ -16,12 +17,11 @@ class GetEventUseCaseTest {
         val repository = FakeEventRepository()
         val event = testEvent()
         repository.save(event)
-
         val getEvent: GetEvent = GetEventUseCase(repository)
+
         val found = getEvent.execute(event.id)
 
-        assertEquals(event.id, found?.id)
-        assertEquals(event.title, found?.title)
+        assertEventsEqual(event, found)
     }
 
     @Test

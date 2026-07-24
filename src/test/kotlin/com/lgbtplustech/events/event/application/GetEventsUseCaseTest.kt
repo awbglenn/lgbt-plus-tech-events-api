@@ -2,25 +2,33 @@ package com.lgbtplustech.events.event.application
 
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.application.usecase.GetEventsUseCase
+import com.lgbtplustech.events.event.domain.EventStatus
 import com.lgbtplustech.events.testing.FakeEventRepository
+import com.lgbtplustech.events.testing.assertEventsEqual
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 
 class GetEventsUseCaseTest {
 
     @Test
-    fun `should return all events`() {
+    fun `returns all events when no status is provided`() {
         val repository = FakeEventRepository()
-        val first = testEvent()
-        val second = testEvent(title = "Kotlin Meetup")
-        repository.save(first)
-        repository.save(second)
+        val useCase: GetEvents = GetEventsUseCase(repository)
+        val draftEvent = repository.save(testEvent())
+        val publishedEvent = repository.save(
+            testEvent(title = "Kotlin Meetup").apply {
+                publish()
+            }
+        )
 
-        val getEvents: GetEvents = GetEventsUseCase(repository)
-        val events = getEvents.execute()
+        val events = useCase.execute()
 
-        assertEquals(2, events.size)
+        assertEventsEqual(
+            listOf(draftEvent, publishedEvent),
+            events
+        )
     }
-
 }

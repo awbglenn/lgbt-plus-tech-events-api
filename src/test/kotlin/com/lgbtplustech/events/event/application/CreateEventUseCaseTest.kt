@@ -20,11 +20,11 @@ class CreateEventUseCaseTest {
             Instant.parse("2026-06-01T10:00:00Z"),
             ZoneOffset.UTC
         )
-        val createEvent: CreateEvent = CreateEventUseCase(repository, clock)
-        val eventId = createEvent.execute(testCommand())
+        val useCase: CreateEvent = CreateEventUseCase(repository, clock)
+
+        val eventId = useCase.execute(testCommand())
 
         val savedEvent = repository.savedEvent
-
         assertEquals(savedEvent.id, eventId)
         assertEquals(EventStatus.DRAFT, savedEvent.status)
         assertEquals("LGBT+Tech Barcelona", savedEvent.title)

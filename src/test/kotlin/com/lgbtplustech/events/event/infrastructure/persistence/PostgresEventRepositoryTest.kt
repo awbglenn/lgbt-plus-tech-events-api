@@ -106,6 +106,6 @@ class PostgresEventRepositoryTest(
         val foundEvents = repository.findAll(status)
 
         assertEquals(1, foundEvents.size)
-        assertEquals(status, foundEvents[0].status)
+        assertEquals(status, foundEvents.single().status)
     }
 }
