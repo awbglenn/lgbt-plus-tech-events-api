@@ -2,6 +2,7 @@ package com.lgbtplustech.events.testing
 
 import com.lgbtplustech.events.event.application.port.EventRepository
 import com.lgbtplustech.events.event.domain.Event
+import com.lgbtplustech.events.event.domain.EventStatus
 import java.util.UUID
 
 class FakeEventRepository : EventRepository {
@@ -19,6 +20,6 @@ class FakeEventRepository : EventRepository {
     override fun findById(id: UUID): Event? =
         events[id]
 
-    override fun findAll(): List<Event> =
+    override fun findAll(status: EventStatus?): List<Event> =
         events.values.toList()
 }

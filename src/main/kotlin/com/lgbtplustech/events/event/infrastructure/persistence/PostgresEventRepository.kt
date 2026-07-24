@@ -2,6 +2,7 @@ package com.lgbtplustech.events.event.infrastructure.persistence
 
 import com.lgbtplustech.events.event.application.port.EventRepository
 import com.lgbtplustech.events.event.domain.Event
+import com.lgbtplustech.events.event.domain.EventStatus
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -21,7 +22,7 @@ class PostgresEventRepository(
             .map { it.toDomain() }
             .orElse(null)
 
-    override fun findAll(): List<Event> =
+    override fun findAll(status: EventStatus?): List<Event> =
         repository.findAll()
             .map { it.toDomain() }
 }

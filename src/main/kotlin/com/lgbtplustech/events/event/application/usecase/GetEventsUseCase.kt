@@ -11,5 +11,5 @@ class GetEventsUseCase(
 ) : GetEvents {
 
     override fun execute(): List<Event> =
-        eventRepository.findAll()
+        eventRepository.findAll(null)
 }
