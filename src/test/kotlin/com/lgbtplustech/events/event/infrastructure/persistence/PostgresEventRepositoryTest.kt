@@ -1,7 +1,7 @@
 package com.lgbtplustech.events.event.infrastructure.persistence
 
-import com.lgbtplustech.events.event.domain.Event
 import com.lgbtplustech.events.event.domain.EventStatus
+import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Import
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.postgresql.PostgreSQLContainer
-import java.time.Instant
-import java.util.UUID
 
 @DataJpaTest
 @Testcontainers
@@ -53,17 +51,4 @@ class PostgresEventRepositoryTest(
         assertEquals(event.title, found?.title)
         assertEquals(event.description, found?.description)
     }
-
-    private fun testEvent() = Event(
-        id = UUID.randomUUID(),
-        title = "LGBT+Tech Barcelona",
-        description = "Monthly meetup",
-        startsAt = Instant.parse("2026-07-01T18:30:00Z"),
-        endsAt = Instant.parse("2026-07-01T21:00:00Z"),
-        venueName = "Example Venue",
-        venueAddress = "Barcelona",
-        capacity = 50,
-        createdAt = Instant.parse("2026-06-01T10:00:00Z"),
-        updatedAt = Instant.parse("2026-06-01T10:00:00Z")
-    )
 }
