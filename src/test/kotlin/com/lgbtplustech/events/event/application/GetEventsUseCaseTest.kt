@@ -31,4 +31,34 @@ class GetEventsUseCaseTest {
             events
         )
     }
+
+    @ParameterizedTest(name = "returns only {0} events")
+    @EnumSource(EventStatus::class)
+    fun `returns events filtered by status`(status: EventStatus) {
+        val repository = FakeEventRepository()
+        val useCase: GetEvents = GetEventsUseCase(repository)
+        repository.save(testEvent(title = "Draft"))
+        repository.save(
+            testEvent(title = "Published").apply {
+                publish()
+            }
+        )
+        repository.save(
+            testEvent(title = "Cancelled").apply {
+                publish()
+                cancel()
+            }
+        )
+        repository.save(
+            testEvent(title = "Completed").apply {
+                publish()
+                complete()
+            }
+        )
+
+        val events = useCase.execute(status)
+
+        assertEquals(1, events.size)
+        assertEquals(status, events.single().status)
+    }
 }

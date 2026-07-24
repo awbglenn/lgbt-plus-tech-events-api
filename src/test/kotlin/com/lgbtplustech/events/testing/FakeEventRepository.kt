@@ -20,6 +20,10 @@ class FakeEventRepository : EventRepository {
     override fun findById(id: UUID): Event? =
         events[id]
 
-    override fun findAll(status: EventStatus?): List<Event> =
-        events.values.toList()
+    override fun findAll(status: EventStatus?): List<Event> {
+        if(status != null) {
+            return events.values.filter { event -> event.status == status }
+        }
+        return events.values.toList()
+    }
 }
