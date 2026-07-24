@@ -3,11 +3,13 @@ package com.lgbtplustech.events.event.infrastructure.web.controller
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
+import com.lgbtplustech.events.event.domain.EventStatus
 import com.lgbtplustech.events.event.infrastructure.web.dto.EventResponse
 import com.lgbtplustech.events.event.infrastructure.web.dto.toResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
@@ -26,8 +28,11 @@ class EventQueryController(
     }
 
     //TODO add pagination e.g. GET /events?page=0&size=20
+    //TODO add authentication so only admins and organisers can get events other than published
     @GetMapping
-    fun getAll(): List<EventResponse> =
-        getEvents.execute()
+    fun getEvents(
+        @RequestParam(required = false) status: EventStatus?
+    ): List<EventResponse> =
+        getEvents.execute(status)
             .map { it.toResponse() }
 }
