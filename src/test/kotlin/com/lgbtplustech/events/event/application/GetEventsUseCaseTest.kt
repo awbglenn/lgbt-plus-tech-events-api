@@ -1,5 +1,6 @@
 package com.lgbtplustech.events.event.application
 
+import com.lgbtplustech.events.event.application.pagination.PageRequest
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.application.usecase.GetEventsUseCase
 import com.lgbtplustech.events.event.domain.EventStatus
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 class GetEventsUseCaseTest {
 
@@ -24,11 +27,11 @@ class GetEventsUseCaseTest {
             }
         )
 
-        val events = useCase.execute()
+        val result = useCase.execute(pageRequest = PageRequest())
 
         assertEventsEqual(
             listOf(draftEvent, publishedEvent),
-            events
+            result.items
         )
     }
 
@@ -56,9 +59,68 @@ class GetEventsUseCaseTest {
             }
         )
 
-        val events = useCase.execute(status)
+        val result = useCase.execute(status, PageRequest())
 
-        assertEquals(1, events.size)
-        assertEquals(status, events.single().status)
+        assertEquals(1, result.items.size)
+        assertEquals(status, result.items.single().status)
+    }
+
+    @Test
+    fun `returns first page of events`() {
+        val repository = FakeEventRepository()
+
+        val base = Instant.parse("2026-08-01T18:00:00Z")
+
+        repeat(5) { index ->
+            repository.save(
+                testEvent(
+                    title = "Event $index",
+                    startsAt = base.plus(index.toLong(), ChronoUnit.DAYS),
+                    endsAt = base.plus(index.toLong(), ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS)
+                )
+            )
+        }
+
+        val useCase = GetEventsUseCase(repository)
+
+        val result = useCase.execute(
+            status = null,
+            pageRequest = PageRequest(page = 0, size = 2)
+        )
+
+        assertEquals(2, result.items.size)
+        assertEquals(0, result.page)
+        assertEquals(2, result.size)
+        assertEquals(5, result.totalElements)
+        assertEquals(3, result.totalPages)
+    }
+
+    @Test
+    fun `returns second page of events`() {
+        val repository = FakeEventRepository()
+
+        val base = Instant.parse("2026-08-01T18:00:00Z")
+
+        repeat(5) { index ->
+            repository.save(
+                testEvent(
+                    title = "Event $index",
+                    startsAt = base.plus(index.toLong(), ChronoUnit.DAYS),
+                    endsAt = base.plus(index.toLong(), ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS)
+                )
+            )
+        }
+
+        val useCase = GetEventsUseCase(repository)
+
+        val result = useCase.execute(
+            status = null,
+            pageRequest = PageRequest(page = 1, size = 2)
+        )
+
+        assertEquals(
+            listOf("Event 2", "Event 3"),
+            result.items.map { it.title }
+        )
     }
 }

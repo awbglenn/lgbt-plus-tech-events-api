@@ -1,5 +1,7 @@
 package com.lgbtplustech.events.testing
 
+import com.lgbtplustech.events.event.application.pagination.PageRequest
+import com.lgbtplustech.events.event.application.pagination.PageResult
 import com.lgbtplustech.events.event.application.port.EventRepository
 import com.lgbtplustech.events.event.domain.Event
 import com.lgbtplustech.events.event.domain.EventStatus
@@ -20,13 +22,30 @@ class FakeEventRepository : EventRepository {
     override fun findById(id: UUID): Event? =
         events[id]
 
-    override fun findAll(status: EventStatus?): List<Event> {
-        if(status != null) {
-            return events.values
-                .filter { event -> event.status == status }
-                .sortedBy { event -> event.startsAt }
-        }
-        return events.values.toList()
-            .sortedBy { event -> event.startsAt }
+    override fun findAll(
+        status: EventStatus?,
+        pageRequest: PageRequest
+    ): PageResult<Event> {
+        val filteredEvents = events.values
+            .filter { status == null || it.status == status }
+            .sortedBy { it.startsAt }
+
+        val fromIndex = pageRequest.page * pageRequest.size
+        val items = filteredEvents
+            .drop(fromIndex)
+            .take(pageRequest.size)
+
+        val totalElements = filteredEvents.size
+        val totalPages =
+            if (totalElements == 0) 0
+            else (totalElements + pageRequest.size - 1) / pageRequest.size
+
+        return PageResult(
+            items = items,
+            page = pageRequest.page,
+            size = pageRequest.size,
+            totalElements = totalElements,
+            totalPages = totalPages
+        )
     }
 }

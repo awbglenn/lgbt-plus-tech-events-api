@@ -1,10 +1,12 @@
 package com.lgbtplustech.events.event.infrastructure.web.controller
 
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
+import com.lgbtplustech.events.event.application.pagination.PageRequest
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.domain.EventStatus
 import com.lgbtplustech.events.event.infrastructure.web.dto.EventResponse
+import com.lgbtplustech.events.event.infrastructure.web.dto.PageResponse
 import com.lgbtplustech.events.event.infrastructure.web.dto.toResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -31,8 +33,24 @@ class EventQueryController(
     //TODO add authentication so only admins and organisers can get events other than published
     @GetMapping
     fun getEvents(
-        @RequestParam(required = false) status: EventStatus?
-    ): List<EventResponse> =
-        getEvents.execute(status)
-            .map { it.toResponse() }
+        @RequestParam(required = false) status: EventStatus?,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "20") size: Int
+    ): PageResponse<EventResponse> {
+        val result = getEvents.execute(
+            status = status,
+            pageRequest = PageRequest(
+                page = page,
+                size = size
+            )
+        )
+
+        return PageResponse(
+            items = result.items.map{ e -> e.toResponse() },
+            page = result.page,
+            size = result.size,
+            totalElements = result.totalElements,
+            totalPages = result.totalPages
+        )
+    }
 }

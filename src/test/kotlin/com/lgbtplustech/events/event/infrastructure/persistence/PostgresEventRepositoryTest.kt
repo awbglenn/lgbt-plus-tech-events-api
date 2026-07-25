@@ -72,11 +72,11 @@ class PostgresEventRepositoryTest(
             ).apply { publish() }
         )
 
-        val events = repository.findAll()
+        val result = repository.findAll()
 
         assertEventsEqual(
             setOf(draftEvent, publishedEvent),
-            events.toSet()
+            result.items
         )
     }
 
@@ -104,10 +104,10 @@ class PostgresEventRepositoryTest(
             complete()
         })
 
-        val foundEvents = repository.findAll(status)
+        val result = repository.findAll(status)
 
-        assertEquals(1, foundEvents.size)
-        assertEquals(status, foundEvents.single().status)
+        assertEquals(1, result.items.size)
+        assertEquals(status, result.items.single().status)
     }
 
     @Test
@@ -144,7 +144,7 @@ class PostgresEventRepositoryTest(
                 middleEvent,
                 latestEvent
             ),
-            events
+            events.items
         )
     }
 }

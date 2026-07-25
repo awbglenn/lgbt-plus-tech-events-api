@@ -1,5 +1,7 @@
 package com.lgbtplustech.events.event.infrastructure.web.controller
 
+import com.lgbtplustech.events.event.application.pagination.PageRequest
+import com.lgbtplustech.events.event.application.pagination.PageResult
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.domain.EventStatus
@@ -57,44 +59,78 @@ class EventQueryControllerTest(
     }
 
     @Test
-    fun `should return all events`() {
-        val first = testEvent()
-        val second = testEvent(title = "Kotlin Meetup")
+    fun `returns paginated events`() {
+        val event1 = testEvent(title = "Event 1")
+        val event2 = testEvent(title = "Event 2")
 
-        whenever(getEvents.execute())
-            .thenReturn(listOf(first, second))
+        whenever(
+            getEvents.execute(
+                status = null,
+                pageRequest = PageRequest(page = 1, size = 2)
+            )
+        ).thenReturn(
+            PageResult(
+                items = listOf(event1, event2),
+                page = 1,
+                size = 2,
+                totalElements = 5,
+                totalPages = 3
+            )
+        )
 
-        mockMvc.get("/events")
-            .andExpect {
-                status { isOk() }
-                jsonPath("$.length()") { value(2) }
-                jsonPath("$[0].title") { value(first.title) }
-                jsonPath("$[1].title") { value(second.title) }
-            }
+        mockMvc.perform(
+            get("/events")
+                .param("page", "1")
+                .param("size", "2")
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.items.length()").value(2))
+            .andExpect(jsonPath("$.items[0].title").value("Event 1"))
+            .andExpect(jsonPath("$.items[1].title").value("Event 2"))
+            .andExpect(jsonPath("$.page").value(1))
+            .andExpect(jsonPath("$.size").value(2))
+            .andExpect(jsonPath("$.totalElements").value(5))
+            .andExpect(jsonPath("$.totalPages").value(3))
+
+        verify(getEvents).execute(
+            status = null,
+            pageRequest = PageRequest(page = 1, size = 2)
+        )
     }
 
     @Test
-    fun `returns events filtered by status`() {
-        val publishedEvent = testEvent(
-            title = "Published event"
-        ).apply {
+    fun `filters and paginates events`() {
+        val event = testEvent(title = "Published event").apply {
             publish()
         }
 
-        whenever(getEvents.execute(EventStatus.PUBLISHED))
-            .thenReturn(listOf(publishedEvent))
+        whenever(
+            getEvents.execute(
+                status = EventStatus.PUBLISHED,
+                pageRequest = PageRequest(page = 0, size = 10)
+            )
+        ).thenReturn(
+            PageResult(
+                items = listOf(event),
+                page = 0,
+                size = 10,
+                totalElements = 1,
+                totalPages = 1
+            )
+        )
 
         mockMvc.perform(
             get("/events")
                 .param("status", "PUBLISHED")
+                .param("page", "0")
+                .param("size", "10")
         )
             .andExpect(status().isOk)
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.length()").value(1))
-            .andExpect(jsonPath("$[0].id").value(publishedEvent.id.toString()))
-            .andExpect(jsonPath("$[0].title").value("Published event"))
-            .andExpect(jsonPath("$[0].status").value("PUBLISHED"))
-
-        verify(getEvents).execute(EventStatus.PUBLISHED)
+            .andExpect(jsonPath("$.items.length()").value(1))
+            .andExpect(jsonPath("$.items[0].status").value("PUBLISHED"))
+            .andExpect(jsonPath("$.page").value(0))
+            .andExpect(jsonPath("$.size").value(10))
+            .andExpect(jsonPath("$.totalElements").value(1))
+            .andExpect(jsonPath("$.totalPages").value(1))
     }
 }
