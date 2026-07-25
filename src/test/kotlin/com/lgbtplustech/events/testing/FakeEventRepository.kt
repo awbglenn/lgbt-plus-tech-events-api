@@ -22,8 +22,11 @@ class FakeEventRepository : EventRepository {
 
     override fun findAll(status: EventStatus?): List<Event> {
         if(status != null) {
-            return events.values.filter { event -> event.status == status }
+            return events.values
+                .filter { event -> event.status == status }
+                .sortedBy { event -> event.startsAt }
         }
         return events.values.toList()
+            .sortedBy { event -> event.startsAt }
     }
 }

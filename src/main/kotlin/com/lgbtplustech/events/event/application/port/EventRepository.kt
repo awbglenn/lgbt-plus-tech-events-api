@@ -7,5 +7,5 @@ import java.util.UUID
 interface EventRepository {
     fun save(event: Event): Event
     fun findById(id: UUID): Event?
-    fun findAll(status: EventStatus?): List<Event>
+    fun findAll(status: EventStatus? = null): List<Event>
 }

@@ -24,8 +24,8 @@ class PostgresEventRepository(
 
     override fun findAll(status: EventStatus?): List<Event> =
         if (status == null) {
-            repository.findAll()
+            repository.findAllByOrderByStartsAtAsc()
         } else {
-            repository.findAllByStatus(status)
+            repository.findAllByStatusOrderByStartsAtAsc(status)
         }.map { it.toDomain() }
 }

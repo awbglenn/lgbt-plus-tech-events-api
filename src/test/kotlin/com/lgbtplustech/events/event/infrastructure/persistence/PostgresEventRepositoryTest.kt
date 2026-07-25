@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Import
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.postgresql.PostgreSQLContainer
+import java.time.Instant
 import java.util.*
 
 @DataJpaTest
@@ -71,7 +72,7 @@ class PostgresEventRepositoryTest(
             ).apply { publish() }
         )
 
-        val events = repository.findAll(null)
+        val events = repository.findAll()
 
         assertEventsEqual(
             setOf(draftEvent, publishedEvent),
@@ -107,5 +108,43 @@ class PostgresEventRepositoryTest(
 
         assertEquals(1, foundEvents.size)
         assertEquals(status, foundEvents.single().status)
+    }
+
+    @Test
+    fun `finds events ordered by start date ascending`() {
+        val latestEvent = repository.save(
+            testEvent(
+                title = "Latest event",
+                startsAt = Instant.parse("2026-10-01T18:00:00Z"),
+                endsAt = Instant.parse("2026-10-01T20:00:00Z")
+            )
+        )
+
+        val earliestEvent = repository.save(
+            testEvent(
+                title = "Earliest event",
+                startsAt = Instant.parse("2026-08-01T18:00:00Z"),
+                endsAt = Instant.parse("2026-08-01T20:00:00Z")
+            )
+        )
+
+        val middleEvent = repository.save(
+            testEvent(
+                title = "Middle event",
+                startsAt = Instant.parse("2026-09-01T18:00:00Z"),
+                endsAt = Instant.parse("2026-09-01T20:00:00Z")
+            )
+        )
+
+        val events = repository.findAll()
+
+        assertEventsEqual(
+            listOf(
+                earliestEvent,
+                middleEvent,
+                latestEvent
+            ),
+            events
+        )
     }
 }

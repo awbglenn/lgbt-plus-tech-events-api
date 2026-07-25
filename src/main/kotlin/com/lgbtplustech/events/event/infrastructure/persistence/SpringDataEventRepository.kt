@@ -5,5 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
 interface SpringDataEventRepository : JpaRepository<EventEntity, UUID> {
-    fun findAllByStatus(status: EventStatus): List<EventEntity>
+
+    fun findAllByOrderByStartsAtAsc(): List<EventEntity>
+
+    fun findAllByStatusOrderByStartsAtAsc(
+        status: EventStatus
+    ): List<EventEntity>
 }
