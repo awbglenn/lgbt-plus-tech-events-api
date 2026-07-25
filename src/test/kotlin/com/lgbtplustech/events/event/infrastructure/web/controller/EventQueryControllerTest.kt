@@ -2,8 +2,8 @@ package com.lgbtplustech.events.event.infrastructure.web.controller
 
 import com.lgbtplustech.events.event.application.pagination.PageRequest
 import com.lgbtplustech.events.event.application.pagination.PageResult
-import com.lgbtplustech.events.event.application.port.GetEvent
-import com.lgbtplustech.events.event.application.port.GetEvents
+import com.lgbtplustech.events.event.application.port.inbound.GetEvent
+import com.lgbtplustech.events.event.application.port.inbound.GetEvents
 import com.lgbtplustech.events.event.domain.EventStatus
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Test
@@ -13,7 +13,6 @@ import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
-import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get

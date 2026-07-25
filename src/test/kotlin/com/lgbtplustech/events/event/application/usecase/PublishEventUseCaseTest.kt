@@ -1,9 +1,8 @@
-package com.lgbtplustech.events.event.application
+package com.lgbtplustech.events.event.application.usecase
 
 import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
-import com.lgbtplustech.events.event.application.port.PublishEvent
-import com.lgbtplustech.events.event.application.usecase.PublishEventUseCase
+import com.lgbtplustech.events.event.application.port.inbound.PublishEvent
 import com.lgbtplustech.events.event.domain.Event
 import com.lgbtplustech.events.event.domain.EventStatus
 import com.lgbtplustech.events.testing.FakeEventRepository

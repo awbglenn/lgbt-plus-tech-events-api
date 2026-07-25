@@ -1,8 +1,8 @@
 package com.lgbtplustech.events.event.application.usecase
 
 import com.lgbtplustech.events.event.application.command.CreateEventCommand
-import com.lgbtplustech.events.event.application.port.CreateEvent
-import com.lgbtplustech.events.event.application.port.EventRepository
+import com.lgbtplustech.events.event.application.port.inbound.CreateEvent
+import com.lgbtplustech.events.event.application.port.outbound.EventRepository
 import com.lgbtplustech.events.event.domain.Event
 import org.springframework.stereotype.Service
 import java.time.Clock

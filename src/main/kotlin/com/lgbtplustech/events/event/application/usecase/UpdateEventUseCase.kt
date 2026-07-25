@@ -2,8 +2,8 @@ package com.lgbtplustech.events.event.application.usecase
 
 import com.lgbtplustech.events.event.application.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
-import com.lgbtplustech.events.event.application.port.EventRepository
-import com.lgbtplustech.events.event.application.port.UpdateEvent
+import com.lgbtplustech.events.event.application.port.outbound.EventRepository
+import com.lgbtplustech.events.event.application.port.inbound.UpdateEvent
 import org.springframework.stereotype.Service
 import java.time.Clock
 import java.time.Instant

@@ -2,8 +2,8 @@ package com.lgbtplustech.events.event.application.usecase
 
 import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
-import com.lgbtplustech.events.event.application.port.EventRepository
-import com.lgbtplustech.events.event.application.port.PublishEvent
+import com.lgbtplustech.events.event.application.port.outbound.EventRepository
+import com.lgbtplustech.events.event.application.port.inbound.PublishEvent
 import org.springframework.stereotype.Service
 import java.util.UUID
 

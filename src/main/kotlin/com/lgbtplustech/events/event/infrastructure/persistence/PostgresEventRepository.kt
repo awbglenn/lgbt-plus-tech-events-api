@@ -2,11 +2,10 @@ package com.lgbtplustech.events.event.infrastructure.persistence
 
 import com.lgbtplustech.events.event.application.pagination.PageRequest
 import com.lgbtplustech.events.event.application.pagination.PageResult
-import com.lgbtplustech.events.event.application.port.EventRepository
+import com.lgbtplustech.events.event.application.port.outbound.EventRepository
 import com.lgbtplustech.events.event.domain.Event
 import com.lgbtplustech.events.event.domain.EventStatus
 import org.springframework.data.domain.PageRequest as SpringPageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Repository
 import java.util.UUID
 

@@ -1,11 +1,9 @@
-package com.lgbtplustech.events.event.application
+package com.lgbtplustech.events.event.application.usecase
 
-import com.lgbtplustech.events.event.application.port.GetEvent
-import com.lgbtplustech.events.event.application.usecase.GetEventUseCase
+import com.lgbtplustech.events.event.application.port.inbound.GetEvent
 import com.lgbtplustech.events.testing.FakeEventRepository
 import com.lgbtplustech.events.testing.assertEventsEqual
 import com.lgbtplustech.events.testing.testEvent
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import java.util.UUID

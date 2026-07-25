@@ -2,7 +2,7 @@ package com.lgbtplustech.events.event.application.usecase
 
 import com.lgbtplustech.events.event.application.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
-import com.lgbtplustech.events.event.application.port.UpdateEvent
+import com.lgbtplustech.events.event.application.port.inbound.UpdateEvent
 import com.lgbtplustech.events.testing.FakeEventRepository
 import com.lgbtplustech.events.testing.testEvent
 import org.junit.jupiter.api.Assertions.assertEquals

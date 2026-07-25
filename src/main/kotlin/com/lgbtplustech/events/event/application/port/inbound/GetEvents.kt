@@ -1,16 +1,13 @@
-package com.lgbtplustech.events.event.application.port
+package com.lgbtplustech.events.event.application.port.inbound
 
 import com.lgbtplustech.events.event.application.pagination.PageRequest
 import com.lgbtplustech.events.event.application.pagination.PageResult
 import com.lgbtplustech.events.event.domain.Event
 import com.lgbtplustech.events.event.domain.EventStatus
-import java.util.UUID
 
-interface EventRepository {
-    fun save(event: Event): Event
-    fun findById(id: UUID): Event?
-    fun findAll(
+interface GetEvents {
+    fun execute(
         status: EventStatus? = null,
-        pageRequest: PageRequest = PageRequest(),
+        pageRequest: PageRequest = PageRequest()
     ): PageResult<Event>
 }

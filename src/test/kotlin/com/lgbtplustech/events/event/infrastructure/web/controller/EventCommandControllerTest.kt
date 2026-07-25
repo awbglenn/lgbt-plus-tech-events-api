@@ -3,11 +3,11 @@ package com.lgbtplustech.events.event.infrastructure.web.controller
 import com.lgbtplustech.events.event.application.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventCannotBeCompletedException
 import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
-import com.lgbtplustech.events.event.application.port.CancelEvent
-import com.lgbtplustech.events.event.application.port.CompleteEvent
-import com.lgbtplustech.events.event.application.port.CreateEvent
-import com.lgbtplustech.events.event.application.port.PublishEvent
-import com.lgbtplustech.events.event.application.port.UpdateEvent
+import com.lgbtplustech.events.event.application.port.inbound.CancelEvent
+import com.lgbtplustech.events.event.application.port.inbound.CompleteEvent
+import com.lgbtplustech.events.event.application.port.inbound.CreateEvent
+import com.lgbtplustech.events.event.application.port.inbound.PublishEvent
+import com.lgbtplustech.events.event.application.port.inbound.UpdateEvent
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments

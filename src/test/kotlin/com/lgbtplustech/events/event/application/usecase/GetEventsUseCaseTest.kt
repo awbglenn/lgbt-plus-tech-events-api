@@ -1,8 +1,7 @@
-package com.lgbtplustech.events.event.application
+package com.lgbtplustech.events.event.application.usecase
 
 import com.lgbtplustech.events.event.application.pagination.PageRequest
-import com.lgbtplustech.events.event.application.port.GetEvents
-import com.lgbtplustech.events.event.application.usecase.GetEventsUseCase
+import com.lgbtplustech.events.event.application.port.inbound.GetEvents
 import com.lgbtplustech.events.event.domain.EventStatus
 import com.lgbtplustech.events.testing.FakeEventRepository
 import com.lgbtplustech.events.testing.assertEventsEqual

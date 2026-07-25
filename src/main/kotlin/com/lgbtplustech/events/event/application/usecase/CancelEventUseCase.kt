@@ -1,8 +1,8 @@
 package com.lgbtplustech.events.event.application.usecase
 
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
-import com.lgbtplustech.events.event.application.port.CancelEvent
-import com.lgbtplustech.events.event.application.port.EventRepository
+import com.lgbtplustech.events.event.application.port.inbound.CancelEvent
+import com.lgbtplustech.events.event.application.port.outbound.EventRepository
 import org.springframework.stereotype.Service
 import java.util.UUID
 

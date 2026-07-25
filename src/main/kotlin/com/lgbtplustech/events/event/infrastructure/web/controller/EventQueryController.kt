@@ -2,8 +2,8 @@ package com.lgbtplustech.events.event.infrastructure.web.controller
 
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
 import com.lgbtplustech.events.event.application.pagination.PageRequest
-import com.lgbtplustech.events.event.application.port.GetEvent
-import com.lgbtplustech.events.event.application.port.GetEvents
+import com.lgbtplustech.events.event.application.port.inbound.GetEvent
+import com.lgbtplustech.events.event.application.port.inbound.GetEvents
 import com.lgbtplustech.events.event.domain.EventStatus
 import com.lgbtplustech.events.event.infrastructure.web.dto.response.EventResponse
 import com.lgbtplustech.events.event.infrastructure.web.dto.response.EventsPageResponse

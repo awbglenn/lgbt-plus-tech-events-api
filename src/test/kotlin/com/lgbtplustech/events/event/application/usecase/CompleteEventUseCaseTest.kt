@@ -2,7 +2,7 @@ package com.lgbtplustech.events.event.application.usecase
 
 import com.lgbtplustech.events.event.application.exception.EventCannotBeCompletedException
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
-import com.lgbtplustech.events.event.application.port.CompleteEvent
+import com.lgbtplustech.events.event.application.port.inbound.CompleteEvent
 import com.lgbtplustech.events.event.domain.EventStatus
 import com.lgbtplustech.events.testing.FakeEventRepository
 import com.lgbtplustech.events.testing.testEvent
