@@ -5,9 +5,9 @@ import com.lgbtplustech.events.event.application.pagination.PageRequest
 import com.lgbtplustech.events.event.application.port.GetEvent
 import com.lgbtplustech.events.event.application.port.GetEvents
 import com.lgbtplustech.events.event.domain.EventStatus
-import com.lgbtplustech.events.event.infrastructure.web.dto.EventResponse
-import com.lgbtplustech.events.event.infrastructure.web.dto.PageResponse
-import com.lgbtplustech.events.event.infrastructure.web.dto.toResponse
+import com.lgbtplustech.events.event.infrastructure.web.dto.response.EventResponse
+import com.lgbtplustech.events.event.infrastructure.web.dto.response.EventsPageResponse
+import com.lgbtplustech.events.event.infrastructure.web.dto.response.toResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -36,7 +36,7 @@ class EventQueryController(
         @RequestParam(required = false) status: EventStatus?,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int
-    ): PageResponse<EventResponse> {
+    ): EventsPageResponse {
         val result = getEvents.execute(
             status = status,
             pageRequest = PageRequest(
@@ -45,7 +45,7 @@ class EventQueryController(
             )
         )
 
-        return PageResponse(
+        return EventsPageResponse(
             items = result.items.map{ e -> e.toResponse() },
             page = result.page,
             size = result.size,

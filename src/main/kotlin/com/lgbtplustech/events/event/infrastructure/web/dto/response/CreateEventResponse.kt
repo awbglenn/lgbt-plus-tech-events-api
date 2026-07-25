@@ -1,4 +1,4 @@
-package com.lgbtplustech.events.event.infrastructure.web.dto
+package com.lgbtplustech.events.event.infrastructure.web.dto.response
 
 import java.util.UUID
 

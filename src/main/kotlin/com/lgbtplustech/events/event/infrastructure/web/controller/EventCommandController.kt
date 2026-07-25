@@ -7,7 +7,9 @@ import com.lgbtplustech.events.event.application.port.CancelEvent
 import com.lgbtplustech.events.event.application.port.CompleteEvent
 import com.lgbtplustech.events.event.application.port.PublishEvent
 import com.lgbtplustech.events.event.application.port.UpdateEvent
-import com.lgbtplustech.events.event.infrastructure.web.dto.*
+import com.lgbtplustech.events.event.infrastructure.web.dto.request.CreateEventRequest
+import com.lgbtplustech.events.event.infrastructure.web.dto.request.UpdateEventRequest
+import com.lgbtplustech.events.event.infrastructure.web.dto.response.CreateEventResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PatchMapping

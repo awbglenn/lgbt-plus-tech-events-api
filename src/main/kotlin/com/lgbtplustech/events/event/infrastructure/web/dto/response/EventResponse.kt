@@ -1,4 +1,4 @@
-package com.lgbtplustech.events.event.infrastructure.web.dto
+package com.lgbtplustech.events.event.infrastructure.web.dto.response
 
 import com.lgbtplustech.events.event.domain.Event
 import com.lgbtplustech.events.event.domain.EventStatus
