@@ -3,6 +3,7 @@ package com.lgbtplustech.events.config
 import com.lgbtplustech.events.event.application.exception.EventCannotBeCompletedException
 import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
+import com.lgbtplustech.events.user.application.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -42,5 +43,16 @@ class GlobalExceptionHandler {
             exception.message ?: "Event cannot be completed"
         ).apply {
             title = "Event cannot be completed"
+        }
+
+    @ExceptionHandler(UserNotFoundException::class)
+    fun handleUserNotFound(
+        exception: UserNotFoundException
+    ): ProblemDetail =
+        ProblemDetail.forStatusAndDetail(
+            HttpStatus.NOT_FOUND,
+            exception.message ?: "User not found"
+        ).apply {
+            title = "User not found"
         }
 }
