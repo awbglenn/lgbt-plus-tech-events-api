@@ -30,4 +30,25 @@ data class User(
             "Display name must not be blank"
         }
     }
+
+    companion object {
+        fun create(
+            id: UUID,
+            email: String,
+            displayName: String,
+            firstName: String,
+            lastName: String,
+            now: Instant
+        ): User =
+            User(
+                id = id,
+                email = email,
+                displayName = displayName,
+                firstName = firstName,
+                lastName = lastName,
+                role = UserRole.MEMBER,
+                createdAt = now,
+                updatedAt = now
+            )
+    }
 }

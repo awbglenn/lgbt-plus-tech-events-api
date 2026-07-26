@@ -9,20 +9,17 @@ import java.util.UUID
 class UserTest {
 
     private val now = Instant.parse("2026-07-25T18:00:00Z")
+    private val id = UUID.randomUUID()
 
     @Test
     fun `creates a valid user`() {
-        val id = UUID.randomUUID()
-
-        val user = User(
+        val user = User.create(
             id = id,
             email = "alice@example.com",
             displayName = "Alice",
             firstName = "Alice",
             lastName = "Johnson",
-            role = UserRole.MEMBER,
-            createdAt = now,
-            updatedAt = now
+            now = now
         )
 
         assertEquals(id, user.id)
@@ -38,15 +35,13 @@ class UserTest {
     @Test
     fun `does not allow a blank email`() {
         assertThrows(IllegalArgumentException::class.java) {
-            User(
-                id = UUID.randomUUID(),
+            User.create(
+                id = id,
                 email = " ",
                 displayName = "Alice",
                 firstName = "Alice",
                 lastName = "Johnson",
-                role = UserRole.MEMBER,
-                createdAt = now,
-                updatedAt = now
+                now = now
             )
         }
     }
@@ -54,15 +49,13 @@ class UserTest {
     @Test
     fun `does not allow a blank display name`() {
         assertThrows(IllegalArgumentException::class.java) {
-            User(
-                id = UUID.randomUUID(),
+            User.create(
+                id = id,
                 email = "alice@example.com",
                 displayName = " ",
                 firstName = "Alice",
                 lastName = "Johnson",
-                role = UserRole.MEMBER,
-                createdAt = now,
-                updatedAt = now
+                now = now
             )
         }
     }
@@ -70,15 +63,13 @@ class UserTest {
     @Test
     fun `does not allow a blank first name`() {
         assertThrows(IllegalArgumentException::class.java) {
-            User(
-                id = UUID.randomUUID(),
+            User.create(
+                id = id,
                 email = "alice@example.com",
                 displayName = "Alice",
                 firstName = " ",
                 lastName = "Johnson",
-                role = UserRole.MEMBER,
-                createdAt = now,
-                updatedAt = now
+                now = now
             )
         }
     }
@@ -86,15 +77,13 @@ class UserTest {
     @Test
     fun `does not allow a blank last name`() {
         assertThrows(IllegalArgumentException::class.java) {
-            User(
-                id = UUID.randomUUID(),
+            User.create(
+                id = id,
                 email = "alice@example.com",
                 displayName = "Alice",
                 firstName = "Alice",
                 lastName = " ",
-                role = UserRole.MEMBER,
-                createdAt = now,
-                updatedAt = now
+                now = now
             )
         }
     }
