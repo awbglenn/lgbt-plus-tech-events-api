@@ -85,7 +85,7 @@ class EventTest {
             venueName = "Updated Venue",
             venueAddress = "Updated Address",
             capacity = 100,
-            updatedAt = Instant.parse("2026-06-02T10:00:00Z")
+            now = Instant.parse("2026-06-02T10:00:00Z")
         )
 
         assertEquals("Updated title", event.title)
@@ -119,7 +119,7 @@ class EventTest {
             venueName = event.venueName,
             venueAddress = event.venueAddress,
             capacity = event.capacity,
-            updatedAt = Instant.parse("2026-06-02T10:00:00Z")
+            now = Instant.parse("2026-06-02T10:00:00Z")
         )
 
         assertEquals("Updated published event", event.title)
@@ -210,7 +210,7 @@ class EventTest {
                         venueName = event.venueName,
                         venueAddress = event.venueAddress,
                         capacity = event.capacity,
-                        updatedAt = Instant.parse("2026-06-02T10:00:00Z")
+                        now = Instant.parse("2026-06-02T10:00:00Z")
                     )
                 }
             ),
@@ -225,7 +225,7 @@ class EventTest {
                         venueName = event.venueName,
                         venueAddress = event.venueAddress,
                         capacity = 0,
-                        updatedAt = Instant.parse("2026-06-02T10:00:00Z")
+                        now = Instant.parse("2026-06-02T10:00:00Z")
                     )
                 }
             ),
@@ -240,7 +240,7 @@ class EventTest {
                         venueName = event.venueName,
                         venueAddress = event.venueAddress,
                         capacity = event.capacity,
-                        updatedAt = Instant.parse("2026-06-02T10:00:00Z")
+                        now = Instant.parse("2026-06-02T10:00:00Z")
                     )
                 }
             )
@@ -258,7 +258,7 @@ class EventTest {
                         venueName = event.venueName,
                         venueAddress = event.venueAddress,
                         capacity = event.capacity,
-                        updatedAt = Instant.parse("2026-06-02T10:00:00Z")
+                        now = Instant.parse("2026-06-02T10:00:00Z")
                     )
                 }),
                 Arguments.of("venue name is blank", { event: Event ->
@@ -270,7 +270,7 @@ class EventTest {
                         endsAt = event.endsAt,
                         venueAddress = event.venueAddress,
                         capacity = event.capacity,
-                        updatedAt = Instant.parse("2026-06-02T10:00:00Z")
+                        now = Instant.parse("2026-06-02T10:00:00Z")
                     )
                 }),
                 Arguments.of("venue address is blank", { event: Event ->
@@ -282,7 +282,7 @@ class EventTest {
                         startsAt = event.startsAt,
                         endsAt = event.endsAt,
                         capacity = event.capacity,
-                        updatedAt = Instant.parse("2026-06-02T10:00:00Z")
+                        now = Instant.parse("2026-06-02T10:00:00Z")
                     )
                 }),
             )

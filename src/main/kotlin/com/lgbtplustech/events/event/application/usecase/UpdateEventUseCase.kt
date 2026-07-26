@@ -26,7 +26,7 @@ class UpdateEventUseCase(
             venueName = command.venueName ?: event.venueName,
             venueAddress = command.venueAddress ?: event.venueAddress,
             capacity = command.capacity ?: event.capacity,
-            updatedAt = Instant.now(clock)
+            now = Instant.now(clock)
         )
 
         eventRepository.save(event)

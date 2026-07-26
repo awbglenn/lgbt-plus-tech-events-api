@@ -53,7 +53,7 @@ class Event(
         venueName: String,
         venueAddress: String,
         capacity: Int,
-        updatedAt: Instant
+        now: Instant
     ) {
         check(status != EventStatus.CANCELLED) {
             "A cancelled event cannot be updated"
@@ -78,7 +78,7 @@ class Event(
         require(title.isNotBlank()) { "Title cannot be blank" }
         require(capacity > 0) { "Capacity must be greater than zero" }
         require(endsAt > startsAt) { "Event must end after it starts" }
-        require(updatedAt >= createdAt) { "Updated at cannot be before created at" }
+        require(now >= createdAt) { "Updated at cannot be before created at" }
 
         this.title = title
         this.description = description
@@ -87,7 +87,7 @@ class Event(
         this.venueName = venueName
         this.venueAddress = venueAddress
         this.capacity = capacity
-        this.updatedAt = updatedAt
+        this.updatedAt = now
     }
 
     fun complete() {
@@ -108,5 +108,31 @@ class Event(
         }
 
         status = EventStatus.CANCELLED
+    }
+
+    companion object {
+        fun create(
+            id: UUID,
+            title: String,
+            description: String,
+            startsAt: Instant,
+            endsAt: Instant,
+            venueName: String,
+            venueAddress: String,
+            capacity: Int,
+            now: Instant
+        ): Event =
+            Event(
+                id = id,
+                title = title,
+                description = description,
+                startsAt = startsAt,
+                endsAt = endsAt,
+                venueName = venueName,
+                venueAddress = venueAddress,
+                capacity = capacity,
+                createdAt = now,
+                updatedAt = now
+            )
     }
 }

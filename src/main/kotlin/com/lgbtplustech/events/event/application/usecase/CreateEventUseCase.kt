@@ -6,7 +6,6 @@ import com.lgbtplustech.events.event.application.port.outbound.EventRepository
 import com.lgbtplustech.events.event.domain.Event
 import org.springframework.stereotype.Service
 import java.time.Clock
-import java.time.Instant
 import java.util.UUID
 
 @Service
@@ -15,9 +14,7 @@ class CreateEventUseCase(
     private val clock: Clock
 ) : CreateEvent {
     override fun execute(command: CreateEventCommand): UUID {
-        val now = Instant.now(clock)
-
-        val event = Event(
+        val event = Event.create(
             id = UUID.randomUUID(),
             title = command.title,
             description = command.description,
@@ -26,8 +23,7 @@ class CreateEventUseCase(
             venueName = command.venueName,
             venueAddress = command.venueAddress,
             capacity = command.capacity,
-            createdAt = now,
-            updatedAt = now
+            now = clock.instant()
         )
 
         return eventRepository.save(event).id
