@@ -1,6 +1,6 @@
 package com.lgbtplustech.events.event.application.usecase
 
-import com.lgbtplustech.events.event.application.command.UpdateEventCommand
+import com.lgbtplustech.events.event.application.port.inbound.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventNotFoundException
 import com.lgbtplustech.events.event.application.port.outbound.EventRepository
 import com.lgbtplustech.events.event.application.port.inbound.UpdateEvent

@@ -1,4 +1,4 @@
-package com.lgbtplustech.events.event.application.command
+package com.lgbtplustech.events.event.application.port.inbound.command
 
 import java.time.Instant
 import java.util.UUID

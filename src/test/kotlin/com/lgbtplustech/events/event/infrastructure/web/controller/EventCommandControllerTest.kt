@@ -1,6 +1,6 @@
 package com.lgbtplustech.events.event.infrastructure.web.controller
 
-import com.lgbtplustech.events.event.application.command.UpdateEventCommand
+import com.lgbtplustech.events.event.application.port.inbound.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.exception.EventCannotBeCompletedException
 import com.lgbtplustech.events.event.application.exception.EventCannotBePublishedException
 import com.lgbtplustech.events.event.application.port.inbound.CancelEvent

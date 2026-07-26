@@ -1,4 +1,4 @@
-package com.lgbtplustech.events.user.application.command
+package com.lgbtplustech.events.user.application.port.inbound.command
 
 data class CreateUserCommand(
     val email: String,

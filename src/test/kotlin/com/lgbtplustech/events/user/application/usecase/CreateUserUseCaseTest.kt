@@ -1,7 +1,7 @@
 package com.lgbtplustech.events.user.application.usecase
 
 import com.lgbtplustech.events.testing.FakeUserRepository
-import com.lgbtplustech.events.user.application.command.CreateUserCommand
+import com.lgbtplustech.events.user.application.port.inbound.command.CreateUserCommand
 import com.lgbtplustech.events.user.domain.UserRole
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

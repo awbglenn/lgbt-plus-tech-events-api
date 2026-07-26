@@ -1,6 +1,6 @@
 package com.lgbtplustech.events.user.infrastructure.web.controller
 
-import com.lgbtplustech.events.user.application.command.CreateUserCommand
+import com.lgbtplustech.events.user.application.port.inbound.command.CreateUserCommand
 import com.lgbtplustech.events.user.application.port.inbound.CreateUser
 import com.lgbtplustech.events.user.infrastructure.web.dto.request.CreateUserRequest
 import com.lgbtplustech.events.user.infrastructure.web.dto.response.CreateUserResponse

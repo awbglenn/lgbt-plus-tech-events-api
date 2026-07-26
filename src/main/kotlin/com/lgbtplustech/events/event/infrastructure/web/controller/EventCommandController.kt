@@ -1,8 +1,8 @@
 package com.lgbtplustech.events.event.infrastructure.web.controller
 
 import com.lgbtplustech.events.event.application.port.inbound.CreateEvent
-import com.lgbtplustech.events.event.application.command.CreateEventCommand
-import com.lgbtplustech.events.event.application.command.UpdateEventCommand
+import com.lgbtplustech.events.event.application.port.inbound.command.CreateEventCommand
+import com.lgbtplustech.events.event.application.port.inbound.command.UpdateEventCommand
 import com.lgbtplustech.events.event.application.port.inbound.CancelEvent
 import com.lgbtplustech.events.event.application.port.inbound.CompleteEvent
 import com.lgbtplustech.events.event.application.port.inbound.PublishEvent

@@ -1,6 +1,6 @@
 package com.lgbtplustech.events.event.application.usecase
 
-import com.lgbtplustech.events.event.application.command.CreateEventCommand
+import com.lgbtplustech.events.event.application.port.inbound.command.CreateEventCommand
 import com.lgbtplustech.events.event.application.port.inbound.CreateEvent
 import com.lgbtplustech.events.event.application.port.outbound.EventRepository
 import com.lgbtplustech.events.event.domain.Event

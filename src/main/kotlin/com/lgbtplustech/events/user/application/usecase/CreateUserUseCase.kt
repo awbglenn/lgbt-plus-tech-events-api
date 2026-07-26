@@ -1,6 +1,6 @@
 package com.lgbtplustech.events.user.application.usecase
 
-import com.lgbtplustech.events.user.application.command.CreateUserCommand
+import com.lgbtplustech.events.user.application.port.inbound.command.CreateUserCommand
 import com.lgbtplustech.events.user.application.port.inbound.CreateUser
 import com.lgbtplustech.events.user.application.port.outbound.UserRepository
 import com.lgbtplustech.events.user.domain.User
