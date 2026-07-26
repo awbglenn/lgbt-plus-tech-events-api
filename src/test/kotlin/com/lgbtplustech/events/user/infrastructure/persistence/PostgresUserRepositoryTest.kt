@@ -53,4 +53,24 @@ class PostgresUserRepositoryTest(
 
         assertNull(result)
     }
+
+    @Test
+    fun `finds user by id`() {
+        val now = Instant.parse("2026-07-26T12:00:00Z")
+
+        val user = User.create(
+            id = UUID.randomUUID(),
+            email = "alex@example.com",
+            displayName = "Alex",
+            firstName = "Alex",
+            lastName = "Taylor",
+            now = now
+        )
+
+        repository.save(user)
+
+        val found = repository.findById(user.id)
+
+        assertEquals(user, found)
+    }
 }
